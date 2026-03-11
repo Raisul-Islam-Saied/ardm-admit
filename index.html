@@ -375,7 +375,7 @@
                     <!-- SEAT PLAN PRINT BUTTON -->
                     <button class="btn-primary flex items-center justify-center gap-2 w-full" style="background: #C29B0C; color: #005A34; box-shadow: 0 4px 10px rgba(194,155,12,0.3);" onclick="printSeatPlans()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                        সিট প্লান প্রিন্ট করুন (৮টি/পেজ)
+                        সিট প্লান প্রিন্ট করুন (১০টি/পেজ)
                     </button>
                 </div>
 
@@ -501,8 +501,23 @@ const toBn = (n) => {
                     document.getElementById('loader').style.display = 'none';
 
                     if (parsedStudents.length > 0) {
-                        parsedStudents.sort((a,b) => Number(a.roll) - Number(b.roll));
+                        // ক্লাসের সিরিয়াল ঠিক করার জন্য একটি অর্ডার লিস্ট তৈরি
+        const classOrder = {
+            "প্লে": 1, "নার্সারি": 2, "কেজি": 3, 
+            "১ম": 4, "২য়": 5, "৩য়": 6, "৪র্থ": 7, "৫ম": 8, 
+            "৬ষ্ঠ": 9, "৭ম": 10, "৮ম": 11, "৯ম": 12, "১০ম": 13
+        };
 
+        // আগে ক্লাস অনুযায়ী, তারপর রোল অনুযায়ী সাজানো
+        parsedStudents.sort((a, b) => {
+            let orderA = classOrder[a.classBn] || 99; // লিস্টের বাইরে কোনো ক্লাস থাকলে শেষে যাবে
+            let orderB = classOrder[b.classBn] || 99;
+            
+            if (orderA !== orderB) {
+                return orderA - orderB; // ক্লাসের সিরিয়াল অনুযায়ী সাজাবে
+            }
+            return Number(a.roll) - Number(b.roll); // ক্লাস এক হলে রোল অনুযায়ী সাজাবে
+        });
                         showToast(`সফল! ${parsedStudents.length} টি ডাটা পাওয়া গেছে।`);
                         const btnGen = document.getElementById('btn-generate');
                         btnGen.disabled = false;
