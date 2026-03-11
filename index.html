@@ -117,9 +117,9 @@
             .cut-line {
                 width: 100%; border-bottom: 1.5px dashed #888; margin: 6mm 0; position: relative; display: flex; justify-content: center; align-items: center;
             }
-            .cut-line::before {
+           /* .cut-line::before {
                 content: "✂ এখান থেকে কাটুন ✂"; background: white; padding: 0 15px; color: #555; font-size: 11px; transform: translateY(-1px);
-            }
+            }*/
 
             .admit-card {
                 width: 190mm; height: 132mm; 
@@ -586,7 +586,7 @@ const toBn = (n) => {
                             <div class="ac-footer">
                                 <div class="ac-sign"><div>শ্রেণি শিক্ষক</div></div>
                                 <div class="ac-sign"><img src="${ASSETS.SIGN_2}"><div>সুপারিনটেনডেন্ট</div></div>
-                                <div class="ac-date">ইস্যু তারিখ: ${cfg.date}</div>
+                                <div class="ac-date">ইস্যু তারিখ: ${cfg.date} | সফটওয়্যার ডেভলপার : রায়সুল ইসলাম সাঈদ</div>
                             </div>
                         </div>
                     </div>
@@ -671,67 +671,4 @@ const toBn = (n) => {
 </body>
 </html>
 
-   Plans() {
-            document.getElementById('print-engine').innerHTML = globalSeatPlansHTML;
-            window.print();
-        }
-
-    </script>
-</body>
-</html>
-
- pt>
-</body>
-</html>
-
- SeatPlansHTML;
-            window.print();
-        }
-
-    </script>
-</body>
-</html>
-
- ment.getElementById('print-engine').innerHTML = globalSeatPlansHTML;
-            window.print();
-        }
-
-    </script>
-</body>
-</html>
-
- +;
-                if (countSeat === 8 || index === parsedStudents.length - 1) {
-                    globalSeatPlansHTML += `</div>`;
-                    countSeat = 0;
-                }
-
-            });
-
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('success-count').innerText = parsedStudents.length;
-            
-            const printTab = document.getElementById('tab-print');
-            printTab.style.pointerEvents = 'auto';
-            printTab.style.opacity = '1';
-            
-            switchTab('print');
-            showToast("আলহামদুলিল্লাহ! কার্ড তৈরি সম্পন্ন হয়েছে।");
-        });
-
-        // ==========================================
-        // TRIGGER PRINTING FUNCTIONS
-        // ==========================================
-        function printAdmitCards() {
-            document.getElementById('print-engine').innerHTML = globalAdmitCardsHTML;
-            window.print();
-        }
-
-        function printSeatPlans() {
-            document.getElementById('print-engine').innerHTML = globalSeatPlansHTML;
-            window.print();
-        }
-
-    </script>
-</body>
-  </html>
+   
