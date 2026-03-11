@@ -173,38 +173,58 @@
             .ac-date { position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #6b7280; font-family: sans-serif; font-weight: 600;}
 
             /* --- 2. SEAT PLAN PAGE CSS (8 per page) --- */
-            .seat-plan-page {
-                width: 210mm; height: 296mm;
-                page-break-after: always; page-break-inside: avoid;
-                padding: 5mm; box-sizing: border-box;
-                background: white; position: relative;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: repeat(5, 1fr);
-                gap: 0mm; row-gap: 0mm;
-            }
-            .seat-plan-page:last-child { page-break-after: auto; }
-/* কাটার দাগের জন্য নতুন স্টাইল */
-.sp-cut-wrapper {
-    padding: 5mm;
-    border-right: 1.5px dashed #888;
-    border-bottom: 1.5px dashed #888;
+            /* --- 2. SEAT PLAN PAGE CSS (10 per page) --- */
+.seat-plan-page {
+    width: 210mm;
+    height: 296mm;
+    page-break-after: always;
+    page-break-inside: avoid;
+    padding: 0; /* পেজের নিজস্ব প্যাডিং ০, কারণ আমরা কার্ডের চারপাশে প্যাডিং দেব */
     box-sizing: border-box;
+    background: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(5, 1fr); /* এক পেজে ১০টি কার্ড (৫ সারি) */
+    gap: 0;
 }
 
-/* ডান পাশের কার্ডগুলোর ডানে এবং একেবারে নিচের কার্ডগুলোর নিচে দাগ সরাতে */
+.seat-plan-page:last-child {
+    page-break-after: auto;
+}
+
+/* কাটার দাগ এবং ৫ মি.মি. গ্যাপের জন্য Wrapper */
+.sp-cut-wrapper {
+    padding: 5mm; /* প্রতিটি কার্ড সবদিকে ঠিক ৫ মি.মি. জায়গা পাবে */
+    box-sizing: border-box;
+    border-right: 1.5px dashed #888; /* ডানে কাটার দাগ */
+    border-bottom: 1.5px dashed #888; /* নিচে কাটার দাগ */
+    display: flex;
+    flex-direction: column;
+}
+
+/* ডান দিকের কার্ডগুলোর ডানে এবং একেবারে নিচের কার্ডগুলোর নিচে অতিরিক্ত দাগ সরাতে */
 .sp-cut-wrapper:nth-child(even) {
     border-right: none; 
 }
 .sp-cut-wrapper:nth-last-child(1),
 .sp-cut-wrapper:nth-last-child(2) {
     border-bottom: none; 
-        }
-            .seat-plan-card {
-                border: 2px solid var(--gold); outline: 3px solid var(--primary); outline-offset: -4px;
-                padding: 3px; box-sizing: border-box; background: white; color: #111;
-                font-family: 'Noto Serif Bengali', serif; overflow: hidden;
-                display: flex; flex-direction: column;
+}
+
+/* কার্ডের ভেতরের ডিজাইন (আগের মতোই) */
+.seat-plan-card {
+    border: 2px solid var(--gold);
+    outline: 3px solid var(--primary);
+    outline-offset: -4px;
+    padding: 3px;
+    box-sizing: border-box;
+    background: white;
+    color: #111;
+    font-family: 'Noto Serif Bengali', serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* কার্ডটি যেন পুরো ৫ মি.মি. বাদে বাকি জায়গা নিয়ে থাকে */
             }
             .sp-inner {
                 width: 100%; height: 100%; border: 1.5px dashed var(--primary);
@@ -626,28 +646,28 @@ const toBn = (n) => {
 
                 globalSeatPlansHTML += `
         <div class="sp-cut-wrapper">
-          <div class="seat-plan-card" style="height: 100%;">
-              <div class="sp-inner">
-                  <div class="sp-header">
-                      <div class="sp-logo"><img src="${ASSETS.LOGO}"></div>
-                      <div class="sp-title-area">
-                          <h1 class="sp-inst">আবদুর রাজ্জাক দাখিল মাদ্রাসা</h1>
-                          <div class="sp-exam">${cfg.exam}</div>
-                      </div>
-                  </div>
-                  <div class="sp-body">
-                      <div class="sp-data">
-                          <div class="sp-row"><div class="sp-lbl">নাম</div><div class="sp-val" style="font-size: 14px;">${student.nameBn}</div></div>
-                          <div class="sp-row"><div class="sp-lbl">Name</div><div class="sp-val" style="font-size: 14px;">${student.nameEn}</div></div>
-                          <div class="sp-row"><div class="sp-lbl">আইডি</div><div class="sp-val" style="font-family: monospace;">${student.id}</div></div>
-                          <div class="sp-hl-box">
-                              <div class="sp-hl"><div class="sp-lbl">রোল</div><div class="sp-val" style="font-family: monospace; color: #005A34;">${toBn(student.roll)}</div></div>
-                              <div class="sp-hl"><div class="sp-lbl" style="width: 30px;">শ্রেণি</div><div class="sp-val">${student.classBn}</div></div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
+            <div class="seat-plan-card">
+                <div class="sp-inner">
+                    <div class="sp-header">
+                        <div class="sp-logo"><img src="${ASSETS.LOGO}"></div>
+                        <div class="sp-title-area">
+                            <h1 class="sp-inst">আবদুর রাজ্জাক দাখিল মাদ্রাসা</h1>
+                            <div class="sp-exam">${cfg.exam}</div>
+                        </div>
+                    </div>
+                    <div class="sp-body">
+                        <div class="sp-data">
+                            <div class="sp-row"><div class="sp-lbl">নাম</div><div class="sp-val" style="font-size: 14px;">${student.nameBn}</div></div>
+                            <div class="sp-row"><div class="sp-lbl">Name</div><div class="sp-val" style="font-size: 14px;">${student.nameEn}</div></div>
+                            <div class="sp-row"><div class="sp-lbl">আইডি</div><div class="sp-val" style="font-family: monospace;">${student.id}</div></div>
+                            <div class="sp-hl-box">
+                                <div class="sp-hl"><div class="sp-lbl">রোল</div><div class="sp-val" style="font-family: monospace; color: #005A34;">${toBn(student.roll)}</div></div>
+                                <div class="sp-hl"><div class="sp-lbl" style="width: 30px;">শ্রেণি</div><div class="sp-val">${student.classBn}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         `;
                 countSeat++;
