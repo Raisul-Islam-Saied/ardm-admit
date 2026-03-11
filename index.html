@@ -181,10 +181,25 @@
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 grid-template-rows: repeat(5, 1fr);
-                gap: 10mm; row-gap: 10mm;
+                gap: 0mm; row-gap: 0mm;
             }
             .seat-plan-page:last-child { page-break-after: auto; }
+/* কাটার দাগের জন্য নতুন স্টাইল */
+.sp-cut-wrapper {
+    padding: 5mm;
+    border-right: 1.5px dashed #888;
+    border-bottom: 1.5px dashed #888;
+    box-sizing: border-box;
+}
 
+/* ডান পাশের কার্ডগুলোর ডানে এবং একেবারে নিচের কার্ডগুলোর নিচে দাগ সরাতে */
+.sp-cut-wrapper:nth-child(even) {
+    border-right: none; 
+}
+.sp-cut-wrapper:nth-last-child(1),
+.sp-cut-wrapper:nth-last-child(2) {
+    border-bottom: none; 
+        }
             .seat-plan-card {
                 border: 2px solid var(--gold); outline: 3px solid var(--primary); outline-offset: -4px;
                 padding: 3px; box-sizing: border-box; background: white; color: #111;
@@ -610,31 +625,31 @@ const toBn = (n) => {
                 }
 
                 globalSeatPlansHTML += `
-                    <div class="seat-plan-card">
-                        <div class="sp-inner">
-                            <div class="sp-header">
-                                <div class="sp-logo"><img src="${ASSETS.LOGO}"></div>
-                                <div class="sp-title-area">
-                                    <h1 class="sp-inst">আবদুর রাজ্জাক দাখিল মাদ্রাসা</h1>
-                                    <div class="sp-exam">${cfg.exam}</div>
-                                </div>
-                            </div>
-                            <div class="sp-body">
-                                  <div class="sp-data">
-                                    <div class="sp-row"><div class="sp-lbl">নাম</div><div class="sp-val" style="font-size: 14px;">${student.nameBn}</div></div>
-                                    <div class="sp-row"><div class="sp-lbl">Name</div><div class="sp-val" style="font-size: 14px;">${student.nameEn}</div></div>
-                                    
-                                    <div class="sp-row"><div class="sp-lbl">আইডি</div><div class="sp-val" style="font-family: monospace;">${student.id}</div></div>
-                                    <div class="sp-hl-box">
-                                        <div class="sp-hl"><div class="sp-lbl">রোল</div><div class="sp-val" style="font-family: monospace; color: #005A34;">${toBn(student.roll)}</div></div>
-                                        <div class="sp-hl"><div class="sp-lbl" style="width: 30px;">শ্রেণি</div><div class="sp-val">${student.classBn}</div></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
+        <div class="sp-cut-wrapper">
+          <div class="seat-plan-card" style="height: 100%;">
+              <div class="sp-inner">
+                  <div class="sp-header">
+                      <div class="sp-logo"><img src="${ASSETS.LOGO}"></div>
+                      <div class="sp-title-area">
+                          <h1 class="sp-inst">আবদুর রাজ্জাক দাখিল মাদ্রাসা</h1>
+                          <div class="sp-exam">${cfg.exam}</div>
+                      </div>
+                  </div>
+                  <div class="sp-body">
+                      <div class="sp-data">
+                          <div class="sp-row"><div class="sp-lbl">নাম</div><div class="sp-val" style="font-size: 14px;">${student.nameBn}</div></div>
+                          <div class="sp-row"><div class="sp-lbl">Name</div><div class="sp-val" style="font-size: 14px;">${student.nameEn}</div></div>
+                          <div class="sp-row"><div class="sp-lbl">আইডি</div><div class="sp-val" style="font-family: monospace;">${student.id}</div></div>
+                          <div class="sp-hl-box">
+                              <div class="sp-hl"><div class="sp-lbl">রোল</div><div class="sp-val" style="font-family: monospace; color: #005A34;">${toBn(student.roll)}</div></div>
+                              <div class="sp-hl"><div class="sp-lbl" style="width: 30px;">শ্রেণি</div><div class="sp-val">${student.classBn}</div></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        `;
                 countSeat++;
                 if (countSeat === 10 || index === parsedStudents.length - 1) {
                     globalSeatPlansHTML += `</div>`;
