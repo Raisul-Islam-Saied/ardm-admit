@@ -374,7 +374,10 @@
             SIGN_2: `principal-sign.png`,
             DUMMY_AVATAR: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 250'%3E%3Crect width='200' height='250' fill='%23f3f4f6'/%3E%3Ccircle cx='100' cy='90' r='45' fill='%23d1d5db'/%3E%3Cpath d='M30 250 Q100 140 170 250' fill='%23d1d5db'/%3E%3C/svg%3E`
         };
-
+const toBn = (n) => {
+  if (n === undefined || n === null || n === '') return '-';
+  return String(n).replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
+};
         let parsedStudents = [];
         // Variables to store the generated HTML strings
         let globalAdmitCardsHTML = '';
@@ -436,10 +439,12 @@
                                 const v = row['Village (Bn)'] || row['VillageBn'];
                                 const u = row['Union (Bn)'] || row['UnionBn'];
                                 const up = row['Upazila (Bn)'] || row['UpazilaBn'];
+                                const dis = row['District (Bn)'] || row['DistrictBn'];
                                 
                                 if(v) addressParts.push(`গ্রাম: ${v}`);
                                 if(u) addressParts.push(`ডাক: ${u}`);
                                 if(up) addressParts.push(`উপজেলা: ${up}`);
+                                if(dis) addressParts.push(`জেলা: ${dis}`);
                                 const fullAddress = addressParts.join(', ');
 
                                 parsedStudents.push({
@@ -552,7 +557,7 @@
                                     <div class="ac-row"><div class="ac-lbl">পরীক্ষার্থীর নাম</div><div class="ac-val" style="font-size: 15px;">${student.nameBn}</div></div>
                                     <div class="ac-row" style="font-family: 'Playfair Display', serif;"><div class="ac-lbl" style="font-weight:600; font-size: 12px;">Name in English</div><div class="ac-val" style="letter-spacing:1px; text-transform:uppercase; font-size: 12px;">${student.nameEn}</div></div>
                                     <div class="ac-split">
-                                        <div class="ac-box"><div class="ac-lbl">রোল নং</div><div class="ac-val" style="font-family:monospace; font-size:18px; color: #005A34;">${student.roll}</div></div>
+                                        <div class="ac-box"><div class="ac-lbl">রোল নং</div><div class="ac-val" style="font-family:monospace; font-size:18px; color: #005A34;">${toBn(student.roll)}</div></div>
                                         <div class="ac-box"><div class="ac-lbl" style="width:50px;">শ্রেণি</div><div class="ac-val" style="font-size: 15px;">${student.classBn}</div></div>
                                     </div>
                                     <div class="ac-row"><div class="ac-lbl">পিতার নাম</div><div class="ac-val">${student.father}</div></div>
@@ -611,7 +616,7 @@
                                 <div class="sp-logo"><img src="${ASSETS.LOGO}"></div>
                                 <div class="sp-title-area">
                                     <h1 class="sp-inst">আবদুর রাজ্জাক দাখিল মাদ্রাসা</h1>
-                                    <div class="sp-exam">${cfg.exam} -</div>
+                                    <div class="sp-exam">${cfg.exam}</div>
                                 </div>
                             </div>
                             <div class="sp-body">
@@ -621,7 +626,7 @@
                                     
                                     <div class="sp-row"><div class="sp-lbl">আইডি</div><div class="sp-val" style="font-family: monospace;">${student.id}</div></div>
                                     <div class="sp-hl-box">
-                                        <div class="sp-hl"><div class="sp-lbl">রোল</div><div class="sp-val" style="font-family: monospace; color: #005A34;">${student.roll}</div></div>
+                                        <div class="sp-hl"><div class="sp-lbl">রোল</div><div class="sp-val" style="font-family: monospace; color: #005A34;">${toBn(student.roll)}</div></div>
                                         <div class="sp-hl"><div class="sp-lbl" style="width: 30px;">শ্রেণি</div><div class="sp-val">${student.classBn}</div></div>
                                     </div>
                                 </div>
