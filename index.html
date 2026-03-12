@@ -750,7 +750,6 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
             updateFilterUIAfterApply();      
             showToast("সব ফিল্টার রিসেট করা হয়েছে!");      
         }      
-
         function applyAdvancedFilter() {      
             if(originalParsedStudents.length === 0) return;      
             const ruleItems = document.querySelectorAll('.filter-rule-item');      
@@ -762,7 +761,8 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
             }
                   
             parsedStudents = originalParsedStudents.filter(st => {      
-                let logicalExpression = ""; 
+                let finalResult = false;
+                let currentGroupResult = true; 
                 
                 ruleItems.forEach((item, index) => {      
                     const field = item.querySelector('.rule-field').value;      
@@ -789,18 +789,11 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                     let numStVal = parseFloat(toEn(stVal));
                     let strStVal = String(stVal).toLowerCase();
 
-                    if (operator === 'empty') {
-                        conditionMet = (strStVal === "");
-                    } 
-                    else if (operator === 'not_empty') {
-                        conditionMet = (strStVal !== "");
-                    } 
+                    if (operator === 'empty') { conditionMet = (strStVal === ""); } 
+                    else if (operator === 'not_empty') { conditionMet = (strStVal !== ""); } 
                     else if (operator === 'between') {
-                        let min = parseFloat(toEn(inputMin));
-                        let max = parseFloat(toEn(inputMax));
-                        if (!isNaN(numStVal) && !isNaN(min) && !isNaN(max)) {
-                            conditionMet = (numStVal >= min && numStVal <= max);
-                        }
+                        let min = parseFloat(toEn(inputMin)); let max = parseFloat(toEn(inputMax));
+                        if (!isNaN(numStVal) && !isNaN(min) && !isNaN(max)) { conditionMet = (numStVal >= min && numStVal <= max); }
                     } 
                     else if (operator === 'in_list') {
                         let listArr = inputVal.split(',').map(s => String(toEn(s)).trim().toLowerCase());
@@ -808,10 +801,8 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                         conditionMet = listArr.includes(targetVal);
                     } 
                     else {
-                        let numValInput = parseFloat(toEn(inputVal));
-                        let strValInput = String(inputVal).toLowerCase(); 
-                        
-                        let isNumericComparison = !isNaN(numStVal) && !isNaN(numValInput) && field !== 'classBn' && field !== 'nameBn';
+                        let numValInput = parseFloat(toEn(inputVal)); let strValInput = String(inputVal).toLowerCase(); 
+                        let isNumericComparison = !isNaN(numStVal) && !isNaN(numValInput) && field !== 'classBn' && field !== 'nameBn' && field !== 'gender';
                         
                         switch(operator) {      
                             case '==': conditionMet = isNumericComparison ? (numStVal === numValInput) : (strStVal === strValInput); break;      
@@ -825,28 +816,27 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                         }
                     }
                     
-                 /*   if (index > 0) {
-                        logicalExpression = `(${logicalExpression}) ${connector} `;
+                    // ম্যাজিক লজিক: গ্রুপিং সিস্টেম (ব্র্যাকেট ছাড়া)
+                    if (index === 0) {
+                        currentGroupResult = conditionMet;
+                    } else {
+                        if (connector === '||') {
+                            // OR পেলেই আগের গ্রুপ সেভ করে নতুন গ্রুপ শুরু হবে
+                            finalResult = finalResult || currentGroupResult; 
+                            currentGroupResult = conditionMet; 
+                        } else {
+                            // AND পেলে একই গ্রুপে শর্ত যুক্ত হতে থাকবে
+                            currentGroupResult = currentGroupResult && conditionMet; 
+                        }
                     }
-                    logicalExpression += conditionMet ? "true" : "false";*/
-                    // AND / OR এর সঠিক গাণিতিক নিয়মের জন্য ব্র্যাকেট তুলে দেওয়া হলো
-if (index > 0) {
-    logicalExpression += ` ${connector} `;
-}
-logicalExpression += conditionMet ? "true" : "false";
                 });      
                 
-                try {
-                    return new Function('return ' + logicalExpression)();
-                } catch(e) {
-                    console.error(e);
-                    return false;
-                }
+                return finalResult || currentGroupResult; // সবশেষে রেজাল্ট রিটার্ন করা
             });      
 
             updateFilterUIAfterApply();      
             showToast(`ফিল্টার অ্যাপ্লাই হয়েছে (${parsedStudents.length} জন)`);      
-        }      
+        }
 
         function updateFilterUIAfterApply() { 
             closeFilterModal();
