@@ -725,7 +725,7 @@ originalParsedStudents = [...parsedStudents];
             showToast("সব ফিল্টার রিসেট করা হয়েছে!");      
         }      
 
-                    function applyAdvancedFilter() {      
+                            function applyAdvancedFilter() {      
             if(originalParsedStudents.length === 0) return;      
             const ruleItems = document.querySelectorAll('.filter-rule-item');      
             
@@ -820,7 +820,7 @@ originalParsedStudents = [...parsedStudents];
         }      
 
         function updateFilterUIAfterApply() { 
-            closeFilterModal(); // <--- এই লাইনটি না থাকার কারণেই পপআপ বন্ধ হচ্ছিলো না!
+            closeFilterModal(); // <--- এই লাইনটি যুক্ত করা হয়েছে, যাতে পপআপ বন্ধ হয়
                  
             document.getElementById('filter-modal-count').innerText = parsedStudents.length; 
             const btnGen = document.getElementById('btn-generate');      
@@ -832,6 +832,7 @@ originalParsedStudents = [...parsedStudents];
                 btnGen.innerText = `কার্ড তৈরি করুন (Generate)`;      
             }           
         }
+
                 
         // ==========================================
         // QR CODE GENERATOR
