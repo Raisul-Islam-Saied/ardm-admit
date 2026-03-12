@@ -854,7 +854,33 @@ function updateFirstRuleLogic() {
                 updateFilterUIAfterApply();
                 return;
             }
-                  
+                  // --- নতুন: ফাঁকা ইনপুট চেক করার লজিক ---
+            let hasEmptyInput = false;
+            ruleItems.forEach(item => {
+                const operator = item.querySelector('.rule-operator').value;
+                // 'ফাঁকা' বা 'ফাঁকা নয়' শর্ত ছাড়া অন্য সব শর্তে ইনপুট থাকা বাধ্যতামূলক
+                if (operator !== 'empty' && operator !== 'not_empty') {
+                    const valInput = item.querySelector('.rule-val-single');
+                    const minInput = item.querySelector('.rule-val-min');
+                    const maxInput = item.querySelector('.rule-val-max');
+
+                    if (operator === 'between') {
+                        if ((minInput && minInput.value.trim() === '') || (maxInput && maxInput.value.trim() === '')) {
+                            hasEmptyInput = true;
+                        }
+                    } else {
+                        if (valInput && valInput.value.trim() === '') {
+                            hasEmptyInput = true;
+                        }
+                    }
+                }
+            });
+
+            if (hasEmptyInput) {
+                showToast("সতর্কতা: ফিল্টারের মান ফাঁকা রাখা যাবে না! দয়া করে মান দিন অথবা ফাঁকা রুলটি মুছে ফেলুন।");
+                return; // ফাঁকা থাকলে ফিল্টার এপ্লাই করা এখানেই থামিয়ে দেবে
+            }
+            // ------------------------------------------
             parsedStudents = originalParsedStudents.filter(st => {      
                 let finalResult = false;
                 let currentGroupResult = true; 
