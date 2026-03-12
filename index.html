@@ -671,7 +671,6 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
 
             valContainer.innerHTML = `<input type="text" class="rule-val-single w-full border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-[#005A34]" placeholder="${placeholder}" value="${prevVal}">`;
         }
-
         function addFilterRule() {      
             const container = document.getElementById('filter-rules-container');      
             const ruleId = Date.now();      
@@ -680,47 +679,51 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
             const ruleHTML = `      
                 <div class="filter-rule-item flex flex-col sm:flex-row gap-2 sm:items-center bg-gray-50 p-3 sm:p-2 border rounded-lg shadow-sm" id="rule-${ruleId}">      
                     
-                    <div class="w-full sm:w-24 ${isFirst ? 'invisible hidden sm:block' : ''}">
-                        <label class="block sm:hidden text-[10px] font-bold text-gray-500 mb-1">লজিক (Logic)</label>
+                    <div class="w-full sm:w-20 ${isFirst ? 'invisible hidden sm:block' : ''}">
+                        <label class="block sm:hidden text-[10px] font-bold text-gray-500 mb-1">লজিক</label>
                         <select class="rule-connector w-full border border-gray-300 rounded p-1 text-xs font-bold text-gray-700 outline-none focus:border-[#005A34]">
-                            <option value="&&">AND (এবং)</option>
-                            <option value="||">OR (অথবা)</option>
+                            <option value="&&">AND</option>
+                            <option value="||">OR</option>
                         </select>
                     </div>
 
-                    <div class="w-full sm:w-1/4">
-                        <label class="block sm:hidden text-[10px] font-bold text-gray-500 mb-1">ফিল্ড (Field)</label>
+                    <div class="w-full sm:w-12">
+                        <select class="rule-b-open w-full border border-gray-300 rounded p-1 text-xs font-bold text-blue-600 outline-none">
+                            <option value="">-</option><option value="(">(</option><option value="((">((</option>
+                        </select>
+                    </div>
+
+                    <div class="w-full sm:w-1/5">
                         <select class="rule-field w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-[#005A34] outline-none focus:border-[#005A34]" onchange="updateFilterInputUI(this)">      
-                            <option value="roll">রোল (Roll)</option>      
-                            <option value="classBn">শ্রেণি (Class)</option>      
-                            <option value="nameBn">নাম (Name)</option>      
-                            <option value="id">আইডি (ID)</option>      
-                           <option value="gender">লিঙ্গ (Gender)</option>      
-                             <option value="session">সেশন (Session)</option>      
+                            <option value="roll">রোল</option>      
+                            <option value="classBn">শ্রেণি</option>      
+                            <option value="nameBn">নাম</option>      
+                            <option value="id">আইডি</option>      
+                            <option value="gender">লিঙ্গ</option>      
+                            <option value="session">সেশন</option>      
                         </select>
                     </div>
 
-                    <div class="w-full sm:w-1/4">
-                        <label class="block sm:hidden text-[10px] font-bold text-gray-500 mb-1">শর্ত (Condition)</label>
+                    <div class="w-full sm:w-1/5">
                         <select class="rule-operator w-full border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-[#005A34]" onchange="updateFilterInputUI(this)">      
-                            <option value="==">সমান (=)</option>
-                            <option value="!=">সমান নয় (≠)</option>      
-                            <option value="<">ছোট (<)</option>
-                            <option value=">">বড় (>)</option>      
-                            <option value="<=">ছোট বা সমান (<=)</option>
-                            <option value=">=">বড় বা সমান (>=)</option>      
-                            <option value="contains">অংশে আছে (Contains)</option>
-                            <option value="not_contains">অংশে নেই (Not Contains)</option>      
+                            <option value="==">সমান (=)</option><option value="!=">সমান নয় (≠)</option>      
+                            <option value="<">ছোট (<)</option><option value=">">বড় (>)</option>      
+                            <option value="<=">ছোট বা সমান (<=)</option><option value=">=">বড় বা সমান (>=)</option>      
+                            <option value="contains">অংশে আছে</option><option value="not_contains">অংশে নেই</option>      
                             <option value="in_list" style="color: blue; font-weight:bold;">লিস্টে আছে (১, ২, ৩)</option>
-                            <option value="between" style="color: green; font-weight:bold;">মাঝামাঝি (১০-২০)</option>
-                            <option value="empty">ফাঁকা (Blank)</option>
-                            <option value="not_empty">ফাঁকা নয় (Not Blank)</option>      
+                            <option value="between" style="color: green; font-weight:bold;">মাঝামাঝি</option>
+                            <option value="empty">ফাঁকা</option><option value="not_empty">ফাঁকা নয়</option>      
                         </select>
                     </div>
 
                     <div class="w-full sm:flex-1">
-                        <label class="block sm:hidden text-[10px] font-bold text-gray-500 mb-1">মান (Value)</label>
                         <div class="rule-value-container"></div>
+                    </div>
+
+                    <div class="w-full sm:w-12">
+                        <select class="rule-b-close w-full border border-gray-300 rounded p-1 text-xs font-bold text-blue-600 outline-none">
+                            <option value="">-</option><option value=")">)</option><option value="))">))</option>
+                        </select>
                     </div>
 
                     <div class="w-full sm:w-8 flex justify-end mt-2 sm:mt-0">
@@ -736,6 +739,7 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
             updateFilterInputUI(newRow.querySelector('.rule-field'));
         }
 
+        
         function removeFilterRule(id) {
             document.getElementById(id).remove();
             const container = document.getElementById('filter-rules-container');
@@ -750,7 +754,6 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
             updateFilterUIAfterApply();      
             showToast("সব ফিল্টার রিসেট করা হয়েছে!");      
         }      
-
         function applyAdvancedFilter() {      
             if(originalParsedStudents.length === 0) return;      
             const ruleItems = document.querySelectorAll('.filter-rule-item');      
@@ -760,13 +763,28 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                 updateFilterUIAfterApply();
                 return;
             }
+
+            // ব্র্যাকেট ঠিকমতো দেওয়া হয়েছে কিনা চেক করা
+            let openB = 0, closeB = 0;
+            ruleItems.forEach(item => {
+                let o = item.querySelector('.rule-b-open').value;
+                let c = item.querySelector('.rule-b-close').value;
+                if(o==='(') openB++; if(o==='((') openB+=2;
+                if(c===')') closeB++; if(c==='))') closeB+=2;
+            });
+            if(openB !== closeB) {
+                showToast("ফিল্টারে ব্র্যাকেট ( ) ঠিকমতো মেলানো হয়নি!");
+                return;
+            }
                   
             parsedStudents = originalParsedStudents.filter(st => {      
                 let logicalExpression = ""; 
                 
                 ruleItems.forEach((item, index) => {      
                     const field = item.querySelector('.rule-field').value;      
-                    const operator = item.querySelector('.rule-operator').value;      
+                    const operator = item.querySelector('.rule-operator').value;  
+                    const bOpen = item.querySelector('.rule-b-open').value; // ব্র্যাকেট শুরু
+                    const bClose = item.querySelector('.rule-b-close').value; // ব্র্যাকেট শেষ    
                     
                     let connector = "";
                     if (index > 0) {
@@ -789,18 +807,11 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                     let numStVal = parseFloat(toEn(stVal));
                     let strStVal = String(stVal).toLowerCase();
 
-                    if (operator === 'empty') {
-                        conditionMet = (strStVal === "");
-                    } 
-                    else if (operator === 'not_empty') {
-                        conditionMet = (strStVal !== "");
-                    } 
+                    if (operator === 'empty') { conditionMet = (strStVal === ""); } 
+                    else if (operator === 'not_empty') { conditionMet = (strStVal !== ""); } 
                     else if (operator === 'between') {
-                        let min = parseFloat(toEn(inputMin));
-                        let max = parseFloat(toEn(inputMax));
-                        if (!isNaN(numStVal) && !isNaN(min) && !isNaN(max)) {
-                            conditionMet = (numStVal >= min && numStVal <= max);
-                        }
+                        let min = parseFloat(toEn(inputMin)); let max = parseFloat(toEn(inputMax));
+                        if (!isNaN(numStVal) && !isNaN(min) && !isNaN(max)) { conditionMet = (numStVal >= min && numStVal <= max); }
                     } 
                     else if (operator === 'in_list') {
                         let listArr = inputVal.split(',').map(s => String(toEn(s)).trim().toLowerCase());
@@ -808,9 +819,7 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                         conditionMet = listArr.includes(targetVal);
                     } 
                     else {
-                        let numValInput = parseFloat(toEn(inputVal));
-                        let strValInput = String(inputVal).toLowerCase(); 
-                        
+                        let numValInput = parseFloat(toEn(inputVal)); let strValInput = String(inputVal).toLowerCase(); 
                         let isNumericComparison = !isNaN(numStVal) && !isNaN(numValInput) && field !== 'classBn' && field !== 'nameBn';
                         
                         switch(operator) {      
@@ -825,23 +834,18 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                         }
                     }
                     
-                    if (index > 0) {
-                        logicalExpression = `(${logicalExpression}) ${connector} `;
-                    }
-                    logicalExpression += conditionMet ? "true" : "false";
+                    // এখানে ব্র্যাকেটগুলো এক্সপ্রেশনে যোগ করে দেওয়া হচ্ছে
+                    logicalExpression += ` ${connector} ${bOpen} ${conditionMet} ${bClose} `;
                 });      
                 
                 try {
                     return new Function('return ' + logicalExpression)();
-                } catch(e) {
-                    console.error(e);
-                    return false;
-                }
+                } catch(e) { return false; }
             });      
 
             updateFilterUIAfterApply();      
             showToast(`ফিল্টার অ্যাপ্লাই হয়েছে (${parsedStudents.length} জন)`);      
-        }      
+        }
 
         function updateFilterUIAfterApply() { 
             closeFilterModal();
