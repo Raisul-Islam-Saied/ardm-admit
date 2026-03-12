@@ -462,6 +462,12 @@ const toBn = (n) => {
   if (n === undefined || n === null || n === '') return '-';
   return String(n).replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
 };
+    const toEn = (n) => {      
+  if (n === undefined || n === null || n === '') return '-';      
+  const bnToEn = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};      
+  return String(n).replace(/[০-৯]/g, d => bnToEn[d] || d);      
+};
+
         let parsedStudents = [];
         let originalParsedStudents = [];
 
