@@ -282,7 +282,7 @@
             <div class="bg-[#005A34] text-white p-4 flex justify-between items-center">      
                 <h3 class="font-bold flex items-center gap-2 text-md">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg> 
-                    মেইল মার্জ ফিল্টারিং (MS Word Style)
+                    মেইল মার্জ ফিল্টারিং 
                 </h3>      
                 <button onclick="closeFilterModal()" class="text-white hover:text-gray-200 transition-colors">      
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -549,6 +549,7 @@ const toBn = (n) => {
                                 mother: row['MotherNameBn'],
                                 address: fullAddress,
                                 session: row['Session'],
+                                    gender: row['Gender'],
                                 img: row['ImageURL']
                                 });
                             }
@@ -656,6 +657,14 @@ const toBn = (n) => {
                     </select>`;
                 return;
             }
+if (field === 'gender' && ['==', '!='].includes(operator)) {
+                valContainer.innerHTML = `
+                    <select class="rule-val-single w-full border border-gray-300 rounded px-2 py-1.5 text-sm font-bold text-[#005A34] outline-none focus:border-[#005A34]">
+                        <option value="Male">ছেলে</option>
+                        <option value="Female">মেয়ে</option>
+                          </select>`;
+                return;
+            }
 
             let placeholder = "মান লিখুন...";
             if (operator === 'in_list') placeholder = "১, ২, ৩ (কমা দিয়ে লিখুন)";
@@ -686,7 +695,8 @@ const toBn = (n) => {
                             <option value="classBn">শ্রেণি (Class)</option>      
                             <option value="nameBn">নাম (Name)</option>      
                             <option value="id">আইডি (ID)</option>      
-                            <option value="session">সেশন (Session)</option>      
+                           <option value="gender">লিঙ্গ (Gender)</option>      
+                             <option value="session">সেশন (Session)</option>      
                         </select>
                     </div>
 
