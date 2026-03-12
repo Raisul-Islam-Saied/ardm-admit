@@ -725,10 +725,11 @@ originalParsedStudents = [...parsedStudents];
             showToast("সব ফিল্টার রিসেট করা হয়েছে!");      
         }      
 
-        function applyAdvancedFilter() {      
+                    function applyAdvancedFilter() {      
             if(originalParsedStudents.length === 0) return;      
             const ruleItems = document.querySelectorAll('.filter-rule-item');      
             
+            // যদি কোনো রুল না থাকে, তাহলে সব ডাটা আবার ফেরত আনবে
             if(ruleItems.length === 0) {
                 parsedStudents = [...originalParsedStudents];      
                 updateFilterUIAfterApply();
@@ -799,7 +800,10 @@ originalParsedStudents = [...parsedStudents];
                         }
                     }
                     
-                    if (index > 0) logicalExpression += ` ${connector} `;
+                    // MS Word এর মতো নির্ভুল করার জন্য ব্র্যাকেট () যুক্ত করা হয়েছে
+                    if (index > 0) {
+                        logicalExpression = `(${logicalExpression}) ${connector} `;
+                    }
                     logicalExpression += conditionMet ? "true" : "false";
                 });      
                 
@@ -815,7 +819,9 @@ originalParsedStudents = [...parsedStudents];
             showToast(`ফিল্টার অ্যাপ্লাই হয়েছে (${parsedStudents.length} জন)`);      
         }      
 
-        function updateFilterUIAfterApply() {      
+        function updateFilterUIAfterApply() { 
+            closeFilterModal(); // <--- এই লাইনটি না থাকার কারণেই পপআপ বন্ধ হচ্ছিলো না!
+                 
             document.getElementById('filter-modal-count').innerText = parsedStudents.length; 
             const btnGen = document.getElementById('btn-generate');      
             if(parsedStudents.length > 0) {      
@@ -826,7 +832,7 @@ originalParsedStudents = [...parsedStudents];
                 btnGen.innerText = `কার্ড তৈরি করুন (Generate)`;      
             }           
         }
-
+                
         // ==========================================
         // QR CODE GENERATOR
         // ==========================================
