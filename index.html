@@ -825,10 +825,15 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                         }
                     }
                     
-                    if (index > 0) {
+                 /*   if (index > 0) {
                         logicalExpression = `(${logicalExpression}) ${connector} `;
                     }
-                    logicalExpression += conditionMet ? "true" : "false";
+                    logicalExpression += conditionMet ? "true" : "false";*/
+                    // AND / OR এর সঠিক গাণিতিক নিয়মের জন্য ব্র্যাকেট তুলে দেওয়া হলো
+if (index > 0) {
+    logicalExpression += ` ${connector} `;
+}
+logicalExpression += conditionMet ? "true" : "false";
                 });      
                 
                 try {
