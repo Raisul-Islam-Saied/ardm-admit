@@ -754,37 +754,24 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
             updateFilterUIAfterApply();      
             showToast("সব ফিল্টার রিসেট করা হয়েছে!");      
         }      
-        function applyAdvancedFilter() {      
+            function applyAdvancedFilter() {      
             if(originalParsedStudents.length === 0) return;      
             const ruleItems = document.querySelectorAll('.filter-rule-item');      
             
+            // যদি কোনো রুল না থাকে, তাহলে সব ডাটা আবার ফেরত আনবে
             if(ruleItems.length === 0) {
                 parsedStudents = [...originalParsedStudents];      
                 updateFilterUIAfterApply();
                 return;
             }
-
-            // ব্র্যাকেট ঠিকমতো দেওয়া হয়েছে কিনা চেক করা
-            let openB = 0, closeB = 0;
-            ruleItems.forEach(item => {
-                let o = item.querySelector('.rule-b-open').value;
-                let c = item.querySelector('.rule-b-close').value;
-                if(o==='(') openB++; if(o==='((') openB+=2;
-                if(c===')') closeB++; if(c==='))') closeB+=2;
-            });
-            if(openB !== closeB) {
-                showToast("ফিল্টারে ব্র্যাকেট ( ) ঠিকমতো মেলানো হয়নি!");
-                return;
-            }
                   
             parsedStudents = originalParsedStudents.filter(st => {      
-                let logicalExpression = ""; 
+                let finalResult = false;
+                let currentGroupResult = true; 
                 
                 ruleItems.forEach((item, index) => {      
                     const field = item.querySelector('.rule-field').value;      
-                    const operator = item.querySelector('.rule-operator').value;  
-                    const bOpen = item.querySelector('.rule-b-open').value; // ব্র্যাকেট শুরু
-                    const bClose = item.querySelector('.rule-b-close').value; // ব্র্যাকেট শেষ    
+                    const operator = item.querySelector('.rule-operator').value;      
                     
                     let connector = "";
                     if (index > 0) {
@@ -807,6 +794,7 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                     let numStVal = parseFloat(toEn(stVal));
                     let strStVal = String(stVal).toLowerCase();
 
+                    // শর্তগুলো চেক করা হচ্ছে
                     if (operator === 'empty') { conditionMet = (strStVal === ""); } 
                     else if (operator === 'not_empty') { conditionMet = (strStVal !== ""); } 
                     else if (operator === 'between') {
@@ -820,7 +808,7 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                     } 
                     else {
                         let numValInput = parseFloat(toEn(inputVal)); let strValInput = String(inputVal).toLowerCase(); 
-                        let isNumericComparison = !isNaN(numStVal) && !isNaN(numValInput) && field !== 'classBn' && field !== 'nameBn';
+                        let isNumericComparison = !isNaN(numStVal) && !isNaN(numValInput) && field !== 'classBn' && field !== 'nameBn' && field !== 'gender';
                         
                         switch(operator) {      
                             case '==': conditionMet = isNumericComparison ? (numStVal === numValInput) : (strStVal === strValInput); break;      
@@ -834,13 +822,23 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                         }
                     }
                     
-                    // এখানে ব্র্যাকেটগুলো এক্সপ্রেশনে যোগ করে দেওয়া হচ্ছে
-                    logicalExpression += ` ${connector} ${bOpen} ${conditionMet} ${bClose} `;
+                    // ম্যাজিক লজিক: গ্রুপিং সিস্টেম (ব্র্যাকেট ছাড়া)
+                    if (index === 0) {
+                        currentGroupResult = conditionMet;
+                    } else {
+                        if (connector === '||') {
+                            // OR পেলেই আগের গ্রুপ সেভ করে নতুন গ্রুপ শুরু হবে
+                            finalResult = finalResult || currentGroupResult; 
+                            currentGroupResult = conditionMet; 
+                        } else {
+                            // AND পেলে একই গ্রুপে শর্ত যুক্ত হতে থাকবে
+                            currentGroupResult = currentGroupResult && conditionMet; 
+                        }
+                    }
                 });      
                 
-                try {
-                    return new Function('return ' + logicalExpression)();
-                } catch(e) { return false; }
+                // সবশেষে ফাইনাল রেজাল্ট রিটার্ন করা
+                return finalResult || currentGroupResult; 
             });      
 
             updateFilterUIAfterApply();      
