@@ -845,47 +845,40 @@ function updateFirstRuleLogic() {
             updateFilterUIAfterApply();      
             showToast("সব ফিল্টার রিসেট করা হয়েছে!");      
         }      
-        function applyAdvancedFilter() {      
+       
+                function applyAdvancedFilter() {      
             if(originalParsedStudents.length === 0) return;      
-            const ruleItems = document.querySelectorAll('.filter-rule-item');      
+            const allRuleItems = document.querySelectorAll('.filter-rule-item');      
             
-            if(ruleItems.length === 0) {
+            // --- নতুন লজিক: শুধু যেগুলোতে মান দেওয়া আছে সেগুলোই নেওয়া হবে, ফাঁকাগুলো বাদ ---
+            const validRules = Array.from(allRuleItems).filter(item => {
+                const operator = item.querySelector('.rule-operator').value;
+                if (operator === 'empty' || operator === 'not_empty') return true;
+
+                if (operator === 'between') {
+                    const minInput = item.querySelector('.rule-val-min');
+                    const maxInput = item.querySelector('.rule-val-max');
+                    return (minInput && minInput.value.trim() !== '') && (maxInput && maxInput.value.trim() !== '');
+                }
+
+                const valInput = item.querySelector('.rule-val-single');
+                return valInput && valInput.value.trim() !== '';
+            });
+            
+            // যদি কোনো রুল না থাকে বা সবগুলো ঘরই ফাঁকা থাকে, তাহলে সব ডাটা আবার ফেরত আনবে
+            if(validRules.length === 0) {
                 parsedStudents = [...originalParsedStudents];      
                 updateFilterUIAfterApply();
                 return;
             }
-                  // --- নতুন: ফাঁকা ইনপুট চেক করার লজিক ---
-            let hasEmptyInput = false;
-            ruleItems.forEach(item => {
-                const operator = item.querySelector('.rule-operator').value;
-                // 'ফাঁকা' বা 'ফাঁকা নয়' শর্ত ছাড়া অন্য সব শর্তে ইনপুট থাকা বাধ্যতামূলক
-                if (operator !== 'empty' && operator !== 'not_empty') {
-                    const valInput = item.querySelector('.rule-val-single');
-                    const minInput = item.querySelector('.rule-val-min');
-                    const maxInput = item.querySelector('.rule-val-max');
-
-                    if (operator === 'between') {
-                        if ((minInput && minInput.value.trim() === '') || (maxInput && maxInput.value.trim() === '')) {
-                            hasEmptyInput = true;
-                        }
-                    } else {
-                        if (valInput && valInput.value.trim() === '') {
-                            hasEmptyInput = true;
-                        }
-                    }
-                }
-            });
-
-            if (hasEmptyInput) {
-                showToast("সতর্কতা: ফিল্টারের মান ফাঁকা রাখা যাবে না! দয়া করে মান দিন অথবা ফাঁকা রুলটি মুছে ফেলুন।");
-                return; // ফাঁকা থাকলে ফিল্টার এপ্লাই করা এখানেই থামিয়ে দেবে
-            }
-            // ------------------------------------------
+            // ---------------------------------------------------------------------------------
+                  
             parsedStudents = originalParsedStudents.filter(st => {      
                 let finalResult = false;
                 let currentGroupResult = true; 
                 
-                ruleItems.forEach((item, index) => {      
+                // এখানে ruleItems এর বদলে validRules ব্যবহার করা হয়েছে
+                validRules.forEach((item, index) => {      
                     const field = item.querySelector('.rule-field').value;      
                     const operator = item.querySelector('.rule-operator').value;      
                     
@@ -968,7 +961,7 @@ function updateFirstRuleLogic() {
                 btnGen.innerText = `কার্ড তৈরি করুন (${parsedStudents.length} টি)`;      
             } else {      
                 btnGen.disabled = true;      
-                btnGen.innerText = `কার্ড তৈরি করুন (Generate)`;      
+                btnGen.innerText = `কার্ড তৈরি করুন`;      
             }           
         }
 
