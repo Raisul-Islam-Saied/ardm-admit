@@ -723,11 +723,17 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
                         <div class="rule-value-container"></div>
                     </div>
 
-                    <div class="w-full sm:w-8 flex justify-end mt-2 sm:mt-0">
-                        <button onclick="removeFilterRule('rule-${ruleId}')" class="text-red-500 hover:text-white bg-red-100 hover:bg-red-500 p-1.5 rounded-md transition-colors" title="মুছে ফেলুন">      
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
-                    </div>
+                  <div class="w-full sm:w-16 flex justify-end gap-1 mt-2 sm:mt-0">
+    <!-- নতুন: নিচে রুল অ্যাড করার বাটন -->
+    <button onclick="insertRuleAfter('rule-${ruleId}')" class="text-blue-500 hover:text-white bg-blue-100 hover:bg-blue-500 p-1.5 rounded-md transition-colors" title="এর নিচে নতুন রুল যোগ করুন">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+    </button>
+    <!-- ডিলিট বাটন -->
+    <button onclick="removeFilterRule('rule-${ruleId}')" class="text-red-500 hover:text-white bg-red-100 hover:bg-red-500 p-1.5 rounded-md transition-colors" title="মুছে ফেলুন">      
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+    </button>
+</div>
+
                 </div>      
             `;      
             container.insertAdjacentHTML('beforeend', ruleHTML);   
@@ -736,13 +742,102 @@ if (field === 'gender' && ['==', '!='].includes(operator)) {
             updateFilterInputUI(newRow.querySelector('.rule-field'));
         }
 
+        function insertRuleAfter(targetRuleId) {
+    const container = document.getElementById('filter-rules-container');
+    const targetRule = document.getElementById(targetRuleId);
+    
+    const ruleId = Date.now();
+    // এটি যেহেতু প্রথম রুল নয়, তাই লজিক (AND/OR) অপশনটি দৃশ্যমান থাকবে
+    const ruleHTML = `      
+        <div class="filter-rule-item flex flex-col sm:flex-row gap-2 sm:items-center bg-gray-50 p-3 sm:p-2 border rounded-lg shadow-sm" id="rule-${ruleId}">      
+            
+            <div class="w-full sm:w-24">
+                <label class="block sm:hidden text-[10px] font-bold text-gray-500 mb-1">লজিক (Logic)</label>
+                <select class="rule-connector w-full border border-gray-300 rounded p-1 text-xs font-bold text-gray-700 outline-none focus:border-[#005A34]">
+                    <option value="&&">AND (এবং)</option>
+                    <option value="||">OR (অথবা)</option>
+                </select>
+            </div>
+
+            <div class="w-full sm:w-1/4">
+                <label class="block sm:hidden text-[10px] font-bold text-gray-500 mb-1">ফিল্ড (Field)</label>
+                <select class="rule-field w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-[#005A34] outline-none focus:border-[#005A34]" onchange="updateFilterInputUI(this)">      
+                    <option value="roll">রোল (Roll)</option>      
+                    <option value="classBn">শ্রেণি (Class)</option>      
+                    <option value="nameBn">নাম (Name)</option>      
+                    <option value="id">আইডি (ID)</option>      
+                    <option value="gender">লিঙ্গ (Gender)</option>      
+                    <option value="session">সেশন (Session)</option>      
+                </select>
+            </div>
+
+            <div class="w-full sm:w-1/4">
+                <label class="block sm:hidden text-[10px] font-bold text-gray-500 mb-1">শর্ত (Condition)</label>
+                <select class="rule-operator w-full border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-[#005A34]" onchange="updateFilterInputUI(this)">      
+                    <option value="==">সমান (=)</option>
+                    <option value="!=">সমান নয় (≠)</option>      
+                    <option value="<">ছোট (<)</option>
+                    <option value=">">বড় (>)</option>      
+                    <option value="<=">ছোট বা সমান (<=)</option>
+                    <option value=">=">বড় বা সমান (>=)</option>      
+                    <option value="contains">অংশে আছে (Contains)</option>
+                    <option value="not_contains">অংশে নেই (Not Contains)</option>      
+                    <option value="in_list" style="color: blue; font-weight:bold;">লিস্টে আছে (১, ২, ৩)</option>
+                    <option value="between" style="color: green; font-weight:bold;">মাঝামাঝি (১০-২০)</option>
+                    <option value="empty">ফাঁকা (Blank)</option>
+                    <option value="not_empty">ফাঁকা নয় (Not Blank)</option>      
+                </select>
+            </div>
+
+            <div class="w-full sm:flex-1">
+                <label class="block sm:hidden text-[10px] font-bold text-gray-500 mb-1">মান (Value)</label>
+                <div class="rule-value-container"></div>
+            </div>
+
+            <div class="w-full sm:w-16 flex justify-end gap-1 mt-2 sm:mt-0">
+                <button onclick="insertRuleAfter('rule-${ruleId}')" class="text-blue-500 hover:text-white bg-blue-100 hover:bg-blue-500 p-1.5 rounded-md transition-colors" title="এর নিচে নতুন রুল যোগ করুন">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                </button>
+                <button onclick="removeFilterRule('rule-${ruleId}')" class="text-red-500 hover:text-white bg-red-100 hover:bg-red-500 p-1.5 rounded-md transition-colors" title="মুছে ফেলুন">      
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
+            </div>
+        </div>      
+    `;      
+    
+    // নির্দিষ্ট রুলের ঠিক নিচে নতুন রুল বসানো
+    targetRule.insertAdjacentHTML('afterend', ruleHTML);   
+    
+    const newRow = document.getElementById(`rule-${ruleId}`);
+    updateFilterInputUI(newRow.querySelector('.rule-field'));
+    
+    // প্রথম রুল চেক করা (যদি ডিলিট করার কারণে সিরিয়াল পাল্টে যায়)
+    updateFirstRuleLogic();
+}
+
+// এই ছোট ফাংশনটি নিশ্চিত করবে যেন প্রথম রুলের লজিক (AND/OR) সবসময় লুকানো থাকে
+function updateFirstRuleLogic() {
+    const container = document.getElementById('filter-rules-container');
+    if(container.children.length > 0) {
+        // সব রুলের লজিক দেখাও
+        Array.from(container.children).forEach(rule => {
+             const logicDiv = rule.querySelector('.rule-connector').parentElement;
+             logicDiv.classList.remove('invisible', 'hidden', 'sm:block');
+        });
+        // শুধু প্রথম রুলের লজিক লুকান
+        const firstLogicDiv = container.children[0].querySelector('.rule-connector').parentElement;
+        firstLogicDiv.classList.add('invisible', 'hidden', 'sm:block');
+    }
+}
+
+
+
+        
         function removeFilterRule(id) {
-            document.getElementById(id).remove();
-            const container = document.getElementById('filter-rules-container');
-            if(container.children.length > 0) {
-                container.children[0].querySelector('.rule-connector').parentElement.classList.add('invisible');
-            }
-        }
+    document.getElementById(id).remove();
+    updateFirstRuleLogic();
+}
+
 
         function resetFilter() {      
             document.getElementById('filter-rules-container').innerHTML = '';      
