@@ -614,63 +614,68 @@ const toBn = (n) => {
 
         function closeFilterModal() { document.getElementById('filter-modal').classList.add('hidden'); }      
 
-        function updateFilterInputUI(el) {
-            const row = el.closest('.filter-rule-item');
-            const field = row.querySelector('.rule-field').value;
-            const operator = row.querySelector('.rule-operator').value;
-            const valContainer = row.querySelector('.rule-value-container');
+            function updateFilterInputUI(el) {
+        const row = el.closest('.filter-rule-item');
+        const field = row.querySelector('.rule-field').value;
+        const operator = row.querySelector('.rule-operator').value;
+        const valContainer = row.querySelector('.rule-value-container');
 
-            let prevVal = "";
-            const prevInput = valContainer.querySelector('.rule-val-single');
-            if(prevInput && prevInput.tagName === 'INPUT') prevVal = prevInput.value;
+        let prevVal = "";
+        const prevInput = valContainer.querySelector('.rule-val-single');
+        if(prevInput && prevInput.tagName === 'INPUT') prevVal = prevInput.value;
 
-            if (operator === 'empty' || operator === 'not_empty') {
-                valContainer.innerHTML = `<input type="hidden" class="rule-val-single" value="">`;
-                return;
-            }
+        if (operator === 'empty' || operator === 'not_empty') {
+            valContainer.innerHTML = `<input type="hidden" class="rule-val-single" value="">`;
+            return;
+        }
 
-            if (operator === 'between') {
+        if (operator === 'between') {
+            if (field === 'classBn') {
+                const classes = ['প্লে', 'নার্সারি', 'কেজি', '১ম', '২য়', '৩য়', '৪র্থ', '৫ম', '৬ষ্ঠ', '৭ম', '৮ম', '৯ম', '১০ম'];
+                let opts = classes.map(c => `<option value="${c}">${c}</option>`).join('');
+                valContainer.innerHTML = `
+                    <div class="flex gap-2">
+                        <select class="rule-val-min w-1/2 border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-[#005A34]">${opts}</select>
+                        <select class="rule-val-max w-1/2 border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-[#005A34]">${opts}</select>
+                    </div>`;
+            } else {
                 valContainer.innerHTML = `
                     <div class="flex gap-2">
                         <input type="text" class="rule-val-min w-1/2 border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-[#005A34]" placeholder="শুরু (Min)">
                         <input type="text" class="rule-val-max w-1/2 border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-[#005A34]" placeholder="শেষ (Max)">
                     </div>`;
-                return;
             }
-
-            if (field === 'classBn' && ['==', '!='].includes(operator)) {
-                valContainer.innerHTML = `
-                    <select class="rule-val-single w-full border border-gray-300 rounded px-2 py-1.5 text-sm font-bold text-[#005A34] outline-none focus:border-[#005A34]">
-                        <option value="প্লে">প্লে</option>
-                        <option value="নার্সারি">নার্সারি</option>
-                        <option value="কেজি">কেজি</option>
-                        <option value="১ম">১ম</option>
-                        <option value="২য়">২য়</option>
-                        <option value="৩য়">৩য়</option>
-                        <option value="৪র্থ">৪র্থ</option>
-                        <option value="৫ম">৫ম</option>
-                        <option value="৬ষ্ঠ">৬ষ্ঠ</option>
-                        <option value="৭ম">৭ম</option>
-                        <option value="৮ম">৮ম</option>
-                        <option value="৯ম">৯ম</option>
-                        <option value="১০ম">১০ম</option>
-                    </select>`;
-                return;
-            }
-if (field === 'gender' && ['==', '!='].includes(operator)) {
-                valContainer.innerHTML = `
-                    <select class="rule-val-single w-full border border-gray-300 rounded px-2 py-1.5 text-sm font-bold text-[#005A34] outline-none focus:border-[#005A34]">
-                        <option value="Male">ছেলে</option>
-                        <option value="Female">মেয়ে</option>
-                          </select>`;
-                return;
-            }
-
-            let placeholder = "মান লিখুন...";
-            if (operator === 'in_list') placeholder = "১, ২, ৩ (কমা দিয়ে লিখুন)";
-
-            valContainer.innerHTML = `<input type="text" class="rule-val-single w-full border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-[#005A34]" placeholder="${placeholder}" value="${prevVal}">`;
+            return;
         }
+
+        if (field === 'classBn' && ['==', '!=', '<', '>', '<=', '>='].includes(operator)) {
+            valContainer.innerHTML = `
+                <select class="rule-val-single w-full border border-gray-300 rounded px-2 py-1.5 text-sm font-bold text-[#005A34] outline-none focus:border-[#005A34]">
+                    <option value="প্লে">প্লে</option><option value="নার্সারি">নার্সারি</option>
+                    <option value="কেজি">কেজি</option><option value="১ম">১ম</option>
+                    <option value="২য়">২য়</option><option value="৩য়">৩য়</option>
+                    <option value="৪র্থ">৪র্থ</option><option value="৫ম">৫ম</option>
+                    <option value="৬ষ্ঠ">৬ষ্ঠ</option><option value="৭ম">৭ম</option>
+                    <option value="৮ম">৮ম</option><option value="৯ম">৯ম</option>
+                    <option value="১০ম">১০ম</option>
+                </select>`;
+            return;
+        }
+
+        if (field === 'gender' && ['==', '!='].includes(operator)) {
+            valContainer.innerHTML = `
+                <select class="rule-val-single w-full border border-gray-300 rounded px-2 py-1.5 text-sm font-bold text-[#005A34] outline-none focus:border-[#005A34]">
+                    <option value="Male">ছেলে (Male)</option>
+                    <option value="Female">মেয়ে (Female)</option>
+                </select>`;
+            return;
+        }
+
+        let placeholder = "মান লিখুন...";
+        if (operator === 'in_list') placeholder = "১, ২, ৩ (কমা দিয়ে লিখুন)";
+
+        valContainer.innerHTML = `<input type="text" class="rule-val-single w-full border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-[#005A34]" placeholder="${placeholder}" value="${prevVal}">`;
+    }
 
         function addFilterRule() {      
             const container = document.getElementById('filter-rules-container');      
@@ -845,112 +850,113 @@ function updateFirstRuleLogic() {
             updateFilterUIAfterApply();      
             showToast("সব ফিল্টার রিসেট করা হয়েছে!");      
         }      
-       
-                function applyAdvancedFilter() {      
-            if(originalParsedStudents.length === 0) return;      
-            const allRuleItems = document.querySelectorAll('.filter-rule-item');      
-            
-            // --- নতুন লজিক: শুধু যেগুলোতে মান দেওয়া আছে সেগুলোই নেওয়া হবে, ফাঁকাগুলো বাদ ---
-            const validRules = Array.from(allRuleItems).filter(item => {
-                const operator = item.querySelector('.rule-operator').value;
-                if (operator === 'empty' || operator === 'not_empty') return true;
+           function applyAdvancedFilter() {      
+        if(originalParsedStudents.length === 0) return;      
+        const allRuleItems = document.querySelectorAll('.filter-rule-item');      
+        
+        const validRules = Array.from(allRuleItems).filter(item => {
+            const operator = item.querySelector('.rule-operator').value;
+            if (operator === 'empty' || operator === 'not_empty') return true;
 
-                if (operator === 'between') {
-                    const minInput = item.querySelector('.rule-val-min');
-                    const maxInput = item.querySelector('.rule-val-max');
-                    return (minInput && minInput.value.trim() !== '') && (maxInput && maxInput.value.trim() !== '');
-                }
-
-                const valInput = item.querySelector('.rule-val-single');
-                return valInput && valInput.value.trim() !== '';
-            });
-            
-            // যদি কোনো রুল না থাকে বা সবগুলো ঘরই ফাঁকা থাকে, তাহলে সব ডাটা আবার ফেরত আনবে
-            if(validRules.length === 0) {
-                parsedStudents = [...originalParsedStudents];      
-                updateFilterUIAfterApply();
-                return;
+            if (operator === 'between') {
+                const minInput = item.querySelector('.rule-val-min');
+                const maxInput = item.querySelector('.rule-val-max');
+                return (minInput && minInput.value.trim() !== '') && (maxInput && maxInput.value.trim() !== '');
             }
-            // ---------------------------------------------------------------------------------
-                  
-            parsedStudents = originalParsedStudents.filter(st => {      
-                let finalResult = false;
-                let currentGroupResult = true; 
+
+            const valInput = item.querySelector('.rule-val-single');
+            return valInput && valInput.value.trim() !== '';
+        });
+        
+        if(validRules.length === 0) {
+            parsedStudents = [...originalParsedStudents];      
+            updateFilterUIAfterApply();
+            return;
+        }
+              
+        const classOrderMap = { "প্লে": 1, "নার্সারি": 2, "কেজি": 3, "১ম": 4, "২য়": 5, "৩য়": 6, "৪র্থ": 7, "৫ম": 8, "৬ষ্ঠ": 9, "৭ম": 10, "৮ম": 11, "৯ম": 12, "১০ম": 13 };
+
+        parsedStudents = originalParsedStudents.filter(st => {      
+            let finalResult = false;
+            let currentGroupResult = true; 
+            
+            validRules.forEach((item, index) => {      
+                const field = item.querySelector('.rule-field').value;      
+                const operator = item.querySelector('.rule-operator').value;      
                 
-                // এখানে ruleItems এর বদলে validRules ব্যবহার করা হয়েছে
-                validRules.forEach((item, index) => {      
-                    const field = item.querySelector('.rule-field').value;      
-                    const operator = item.querySelector('.rule-operator').value;      
-                    
-                    let connector = "";
-                    if (index > 0) {
-                        connector = item.querySelector('.rule-connector').value; 
-                    }
+                let connector = index > 0 ? item.querySelector('.rule-connector').value : "";
 
-                    let valInput1 = item.querySelector('.rule-val-single');
-                    let valInputMin = item.querySelector('.rule-val-min');
-                    let valInputMax = item.querySelector('.rule-val-max');
-                    
-                    let inputVal = valInput1 ? valInput1.value.trim() : '';
-                    let inputMin = valInputMin ? valInputMin.value.trim() : '';
-                    let inputMax = valInputMax ? valInputMax.value.trim() : '';
+                let valInput1 = item.querySelector('.rule-val-single');
+                let valInputMin = item.querySelector('.rule-val-min');
+                let valInputMax = item.querySelector('.rule-val-max');
+                
+                let inputVal = valInput1 ? valInput1.value.trim() : '';
+                let inputMin = valInputMin ? valInputMin.value.trim() : '';
+                let inputMax = valInputMax ? valInputMax.value.trim() : '';
 
-                    let stVal = st[field];      
-                    if (stVal === undefined || stVal === null) stVal = "";      
-                          
-                    let conditionMet = false;      
-                    
-                    let numStVal = parseFloat(toEn(stVal));
-                    let strStVal = String(stVal).toLowerCase();
+                let stVal = st[field];      
+                if (stVal === undefined || stVal === null) stVal = "";      
+                      
+                let conditionMet = false;      
+                
+                let numStVal = parseFloat(toEn(String(stVal)));
+                let strStVal = String(stVal).toLowerCase();
 
-                    if (operator === 'empty') { conditionMet = (strStVal === ""); } 
-                    else if (operator === 'not_empty') { conditionMet = (strStVal !== ""); } 
-                    else if (operator === 'between') {
+                if (operator === 'empty') { conditionMet = (strStVal === ""); } 
+                else if (operator === 'not_empty') { conditionMet = (strStVal !== ""); } 
+                else if (operator === 'between') {
+                    if (field === 'classBn') {
+                        let stRank = classOrderMap[stVal] || 99;
+                        let minRank = classOrderMap[inputMin] || 0;
+                        let maxRank = classOrderMap[inputMax] || 99;
+                        conditionMet = (stRank >= minRank && stRank <= maxRank);
+                    } else {
                         let min = parseFloat(toEn(inputMin)); let max = parseFloat(toEn(inputMax));
                         if (!isNaN(numStVal) && !isNaN(min) && !isNaN(max)) { conditionMet = (numStVal >= min && numStVal <= max); }
-                    } 
-                    else if (operator === 'in_list') {
-                        let listArr = inputVal.split(',').map(s => String(toEn(s)).trim().toLowerCase());
-                        let targetVal = String(toEn(stVal)).trim().toLowerCase();
-                        conditionMet = listArr.includes(targetVal);
-                    } 
-                    else {
-                        let numValInput = parseFloat(toEn(inputVal)); let strValInput = String(inputVal).toLowerCase(); 
-                        let isNumericComparison = !isNaN(numStVal) && !isNaN(numValInput) && field !== 'classBn' && field !== 'nameBn' && field !== 'gender';
-                        
-                        switch(operator) {      
-                            case '==': conditionMet = isNumericComparison ? (numStVal === numValInput) : (strStVal === strValInput); break;      
-                            case '!=': conditionMet = isNumericComparison ? (numStVal !== numValInput) : (strStVal !== strValInput); break;      
-                            case '<': conditionMet = isNumericComparison ? (numStVal < numValInput) : (strStVal < strValInput); break;      
-                            case '>': conditionMet = isNumericComparison ? (numStVal > numValInput) : (strStVal > strValInput); break;      
-                            case '<=': conditionMet = isNumericComparison ? (numStVal <= numValInput) : (strStVal <= strValInput); break;      
-                            case '>=': conditionMet = isNumericComparison ? (numStVal >= numValInput) : (strStVal >= strValInput); break;      
-                            case 'contains': conditionMet = strStVal.includes(strValInput); break;      
-                            case 'not_contains': conditionMet = !strStVal.includes(strValInput); break;      
-                        }
                     }
+                } 
+                else if (operator === 'in_list') {
+                    let listArr = inputVal.split(',').map(s => String(toEn(s)).trim().toLowerCase());
+                    let targetVal = String(toEn(stVal)).trim().toLowerCase();
+                    conditionMet = listArr.includes(targetVal);
+                } 
+                else {
+                    let isClassCmp = field === 'classBn';
+                    let isNum = !isNaN(numStVal) && !isNaN(parseFloat(toEn(inputVal))) && !isClassCmp && field !== 'nameBn' && field !== 'gender';
                     
-                    // ম্যাজিক লজিক: গ্রুপিং সিস্টেম (ব্র্যাকেট ছাড়া)
-                    if (index === 0) {
-                        currentGroupResult = conditionMet;
-                    } else {
-                        if (connector === '||') {
-                            // OR পেলেই আগের গ্রুপ সেভ করে নতুন গ্রুপ শুরু হবে
-                            finalResult = finalResult || currentGroupResult; 
-                            currentGroupResult = conditionMet; 
-                        } else {
-                            // AND পেলে একই গ্রুপে শর্ত যুক্ত হতে থাকবে
-                            currentGroupResult = currentGroupResult && conditionMet; 
-                        }
+                    let val1 = isClassCmp ? (classOrderMap[stVal] || 99) : (isNum ? numStVal : strStVal);
+                    let val2 = isClassCmp ? (classOrderMap[inputVal] || 99) : (isNum ? parseFloat(toEn(inputVal)) : inputVal.toLowerCase());
+                    
+                    switch(operator) {      
+                        case '==': conditionMet = (val1 === val2); break;      
+                        case '!=': conditionMet = (val1 !== val2); break;      
+                        case '<': conditionMet = (val1 < val2); break;      
+                        case '>': conditionMet = (val1 > val2); break;      
+                        case '<=': conditionMet = (val1 <= val2); break;      
+                        case '>=': conditionMet = (val1 >= val2); break;      
+                        case 'contains': conditionMet = String(val1).includes(String(val2)); break;      
+                        case 'not_contains': conditionMet = !String(val1).includes(String(val2)); break;      
                     }
-                });      
+                }
                 
-                return finalResult || currentGroupResult; // সবশেষে রেজাল্ট রিটার্ন করা
+                if (index === 0) {
+                    currentGroupResult = conditionMet;
+                } else {
+                    if (connector === '||') {
+                        finalResult = finalResult || currentGroupResult; 
+                        currentGroupResult = conditionMet; 
+                    } else {
+                        currentGroupResult = currentGroupResult && conditionMet; 
+                    }
+                }
             });      
+            
+            return finalResult || currentGroupResult;
+        });      
 
-            updateFilterUIAfterApply();      
-            showToast(`ফিল্টার অ্যাপ্লাই হয়েছে (${parsedStudents.length} জন)`);      
-        }
+        updateFilterUIAfterApply();      
+        showToast(`ফিল্টার অ্যাপ্লাই হয়েছে (${parsedStudents.length} জন)`);      
+    }
 
         function updateFilterUIAfterApply() { 
             closeFilterModal();
