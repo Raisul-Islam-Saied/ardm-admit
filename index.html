@@ -262,6 +262,36 @@
             .sp-hl { flex: 1; display: flex; align-items: center; font-size: 12px; }
             .sp-hl .sp-lbl { width: 60px; }
             .sp-hl .sp-val { border: 1px solid var(--primary); background: rgba(0,90,52,0.05); padding: 2px 4px; border-radius: 3px; font-weight: 800; color: #111; line-height: 1; text-align: center; font-size: 14px;}
+        
+        /* --- 3. PROFESSIONAL HALL PLAN PAGE CSS --- */
+        .hall-plan-page {
+        width: 210mm; min-height: 296mm; padding: 15mm; box-sizing: border-box;
+        background: white; page-break-after: always; font-family: 'Anek Bangla', sans-serif;
+        color: #111; position: relative;
+        }
+        .hp-header { text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 15px; }
+        .hp-inst { font-size: 26px; font-weight: 800; color: var(--primary); margin: 0; line-height: 1.2; }
+        .hp-exam { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 5px; }
+        .hp-title-box { display: inline-block; background: var(--primary); color: white; padding: 4px 25px; border-radius: 20px; font-size: 18px; font-weight: bold; border: 2px solid var(--gold); }
+        
+        .hp-class-section { margin-bottom: 15px; border: 1.5px solid #d1d5db; border-radius: 6px; overflow: hidden; }
+        .hp-class-header { background: #f3f4f6; padding: 6px 12px; border-bottom: 1.5px solid #d1d5db; display: flex; justify-content: space-between; align-items: center; }
+        .hp-class-name { font-size: 18px; font-weight: 800; color: var(--primary); }
+        .hp-class-stats { font-size: 13px; font-weight: 700; color: #4b5563; }
+        
+        /* ৩ কলামের গ্রিড ডিজাইন */
+        .hp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+        .hp-item { padding: 6px 10px; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; display: flex; align-items: baseline; gap: 8px; font-size: 14px; }
+        .hp-item:nth-child(3n) { border-right: none; } /* ডানদিকের বর্ডার সরাতে */
+        .hp-roll { font-weight: 800; font-family: monospace; font-size: 16px; color: var(--primary); width: 35px; text-align: right; flex-shrink: 0;}
+        .hp-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .hp-footer-summary { margin-top: 20px; border: 2px solid var(--primary); padding: 12px; text-align: center; border-radius: 6px; background: rgba(0,90,52,0.03); page-break-inside: avoid; }
+        .hp-total-text { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 5px; }
+        .hp-total-sub { font-size: 15px; font-weight: 600; color: #374151; }
+        
+        .hp-signatures { display: flex; justify-content: space-between; margin-top: 50px; padding: 0 20px; page-break-inside: avoid; }
+        .hp-sign-box { text-align: center; font-size: 14px; font-weight: 700; color: #111; border-top: 1px solid #111; padding-top: 5px; width: 180px; }
         }
     </style>
 </head>
@@ -392,6 +422,10 @@
                             <label class="block text-xs font-bold text-gray-500 mb-1">ইস্যু তারিখ</label>
                             <input type="text" id="cfg-date" value="১০ মে, ২০২৬" class="input-field" style="font-family: sans-serif;">
                         </div>
+                        <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">হল নং</label>
+                        <input type="text" id="cfg-hall" value="১" class="input-field" style="font-family: sans-serif;">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -426,6 +460,12 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                         সিট প্লান প্রিন্ট করুন (১০টি/পেজ)
                     </button>
+                    
+                    <button class="btn-primary flex items-center justify-center gap-2 w-full" style="background: #1e3a8a; box-shadow: 0 4px 10px rgba(30,58,138,0.3);" onclick="printHallPlan()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"></path></svg>
+                    হলের তালিকা প্রিন্ট করুন (A4)
+                    </button>
+                    
                 </div>
 
                 <p class="text-xs text-gray-400 mt-6">প্রিন্ট সেটিংসে Paper Size: A4 এবং Margins: None রাখবেন।</p>
@@ -474,7 +514,7 @@ const toBn = (n) => {
         // Variables to store the generated HTML strings
         let globalAdmitCardsHTML = '';
         let globalSeatPlansHTML = '';
-
+let globalHallPlanHTML = '';
         const API_URL = "https://script.google.com/macros/s/AKfycbzlG01v-naEr4WZR__n4ZX9fPkQR9pE01A0n8W9fOMUfw5x3RIDNPD_ZyaDwsVz9fphFw/exec";
 
         function showToast(msg) {
@@ -1004,9 +1044,92 @@ function updateFirstRuleLogic() {
             // Clear previous HTML strings
             globalAdmitCardsHTML = '';
             globalSeatPlansHTML = '';
+// Clear previous HTML strings
+globalAdmitCardsHTML = '';
+globalSeatPlansHTML = '';
+globalHallPlanHTML = '';
 
             let countAdmit = 0;
             let countSeat = 0;
+// ==========================================
+// HALL PLAN GENERATION LOGIC (PROFESSIONAL)
+// ==========================================
+const hallNo = document.getElementById('cfg-hall') ? document.getElementById('cfg-hall').value : '১';
+let hpGroups = {};
+let totalBoysAll = 0;
+let totalGirlsAll = 0;
+
+// ডাটা গ্রুপিং এবং ছেলে-মেয়ে গোনা
+parsedStudents.forEach(st => {
+    const cls = st.classBn || 'অজানা';
+    if(!hpGroups[cls]) hpGroups[cls] = { students: [], boys: 0, girls: 0 };
+    
+    hpGroups[cls].students.push(st);
+    
+    const gender = (st.gender || '').toLowerCase();
+    if(gender === 'male' || gender === 'ছেলে') {
+        hpGroups[cls].boys++;
+        totalBoysAll++;
+    } else {
+        hpGroups[cls].girls++;
+        totalGirlsAll++;
+    }
+});
+
+// হলের পেজ তৈরি শুরু
+globalHallPlanHTML = `
+<div class="hall-plan-page">
+    <div class="hp-header">
+        <h1 class="hp-inst">আবদুর রাজ্জাক দাখিল মাদ্রাসা</h1>
+        <div class="hp-exam">${cfg.exam}</div>
+        <div class="hp-title-box">হল নং - ${toBn(hallNo)}</div>
+    </div>
+`;
+
+for (let cls in hpGroups) {
+    let grp = hpGroups[cls];
+    globalHallPlanHTML += `
+    <div class="hp-class-section">
+        <div class="hp-class-header">
+            <div class="hp-class-name">${cls} শ্রেণি - ${toBn(grp.students.length)} জন</div>
+            <div class="hp-class-stats">(ছেলে: ${toBn(grp.boys)} | মেয়ে: ${toBn(grp.girls)})</div>
+        </div>
+        <div class="hp-grid">
+    `;
+    
+    // ৩ কলামে নাম ও রোল বসানো
+    grp.students.forEach(st => {
+        globalHallPlanHTML += `
+            <div class="hp-item">
+                <span class="hp-roll">${toBn(st.roll)}</span>
+                <span class="hp-name">- ${st.nameBn}</span>
+            </div>
+        `;
+    });
+    
+    // নিচের বর্ডার ঠিক রাখতে খালি ডিভ দেওয়া (যাতে ৩ কলামের গ্রিড না ভাঙে)
+    let remainder = grp.students.length % 3;
+    if (remainder !== 0) {
+        for(let i=0; i < (3 - remainder); i++) {
+            globalHallPlanHTML += `<div class="hp-item" style="border:none;"></div>`;
+        }
+    }
+    globalHallPlanHTML += `</div></div>`;
+}
+
+// গ্র্যান্ড টোটাল ও স্বাক্ষর
+globalHallPlanHTML += `
+    <div class="hp-footer-summary">
+        <div class="hp-total-text">এই হলে মোট পরীক্ষার্থী: ${toBn(parsedStudents.length)} জন</div>
+        <div class="hp-total-sub">মোট ছাত্র: ${toBn(totalBoysAll)} জন | মোট ছাত্রী: ${toBn(totalGirlsAll)} জন</div>
+    </div>
+    
+    <div class="hp-signatures">
+        <div class="hp-sign-box">কক্ষ পরিদর্শকের স্বাক্ষর</div>
+        <div class="hp-sign-box">কেন্দ্র সচিবের স্বাক্ষর</div>
+    </div>
+</div>
+`;
 
             parsedStudents.forEach((student, index) => {
                 const photoSrc = student.img.startsWith('http') ? student.img : ASSETS.DUMMY_AVATAR;
@@ -1147,6 +1270,11 @@ function updateFirstRuleLogic() {
         function printSeatPlans() {
             document.getElementById('print-engine').innerHTML = globalSeatPlansHTML;
             window.print();
+        }
+        
+        function printHallPlan() {
+        document.getElementById('print-engine').innerHTML = globalHallPlanHTML;
+        window.print();
         }
 
     </script>
