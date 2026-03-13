@@ -263,36 +263,35 @@
             .sp-hl .sp-lbl { width: 60px; }
             .sp-hl .sp-val { border: 1px solid var(--primary); background: rgba(0,90,52,0.05); padding: 2px 4px; border-radius: 3px; font-weight: 800; color: #111; line-height: 1; text-align: center; font-size: 14px;}
         
-        /* --- 3. PROFESSIONAL HALL PLAN PAGE CSS --- */
-        .hall-plan-page {
-        width: 210mm; min-height: 296mm; padding: 15mm; box-sizing: border-box;
-        background: white; page-break-after: always; font-family: 'Anek Bangla', sans-serif;
-        color: #111; position: relative;
-        }
-        .hp-header { text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 15px; }
-        .hp-inst { font-size: 26px; font-weight: 800; color: var(--primary); margin: 0; line-height: 1.2; }
-        .hp-exam { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 5px; }
-        .hp-title-box { display: inline-block; background: var(--primary); color: white; padding: 4px 25px; border-radius: 20px; font-size: 18px; font-weight: bold; border: 2px solid var(--gold); }
-        
-        .hp-class-section { margin-bottom: 15px; border: 1.5px solid #d1d5db; border-radius: 6px; overflow: hidden; }
-        .hp-class-header { background: #f3f4f6; padding: 6px 12px; border-bottom: 1.5px solid #d1d5db; display: flex; justify-content: space-between; align-items: center; }
-        .hp-class-name { font-size: 18px; font-weight: 800; color: var(--primary); }
-        .hp-class-stats { font-size: 13px; font-weight: 700; color: #4b5563; }
-        
-        /* ৩ কলামের গ্রিড ডিজাইন */
-        .hp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
-        .hp-item { padding: 6px 10px; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; display: flex; align-items: baseline; gap: 8px; font-size: 14px; }
-        .hp-item:nth-child(3n) { border-right: none; } /* ডানদিকের বর্ডার সরাতে */
-        .hp-roll { font-weight: 800; font-family: monospace; font-size: 16px; color: var(--primary); width: 35px; text-align: right; flex-shrink: 0;}
-        .hp-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
-        .hp-footer-summary { margin-top: 20px; border: 2px solid var(--primary); padding: 12px; text-align: center; border-radius: 6px; background: rgba(0,90,52,0.03); page-break-inside: avoid; }
-        .hp-total-text { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 5px; }
-        .hp-total-sub { font-size: 15px; font-weight: 600; color: #374151; }
-        
-        .hp-signatures { display: flex; justify-content: space-between; margin-top: 50px; padding: 0 20px; page-break-inside: avoid; }
-        .hp-sign-box { text-align: center; font-size: 14px; font-weight: 700; color: #111; border-top: 1px solid #111; padding-top: 5px; width: 180px; }
-        }
+        /* --- 3. OFFICIAL B&W HALL PLAN PAGE CSS --- */
+.hall-plan-page {
+    width: 210mm; min-height: 296mm; padding: 15mm; box-sizing: border-box;
+    background: white; page-break-after: always; font-family: 'Anek Bangla', sans-serif;
+    color: #000; position: relative;
+}
+.hp-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 20px; }
+.hp-hall-no { font-size: 36px; font-weight: 800; color: #000; margin: 0; border: 3px solid #000; display: inline-block; padding: 8px 40px; }
+.hp-exam { font-size: 18px; font-weight: 700; color: #000; margin-top: 15px; }
+
+.hp-class-section { margin-bottom: 20px; border: 1px solid #000; }
+.hp-class-header { border-bottom: 1px solid #000; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; }
+.hp-class-name { font-size: 18px; font-weight: 800; color: #000; }
+.hp-class-stats { font-size: 15px; font-weight: 700; color: #000; }
+
+/* ৩ কলামের সাদা-কালো গ্রিড */
+.hp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.hp-item { padding: 8px 10px; border-bottom: 1px solid #000; border-right: 1px solid #000; display: flex; align-items: baseline; gap: 8px; font-size: 15px; }
+.hp-item:nth-child(3n) { border-right: none; }
+.hp-roll { font-weight: 800; font-family: monospace; font-size: 17px; color: #000; width: 40px; text-align: right; flex-shrink: 0;}
+.hp-name { font-weight: 600; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.hp-footer-summary { margin-top: 30px; border: 2px solid #000; padding: 15px; text-align: center; page-break-inside: avoid; }
+.hp-total-text { font-size: 20px; font-weight: 800; color: #000; margin-bottom: 5px; }
+.hp-total-sub { font-size: 16px; font-weight: 700; color: #000; }
+
+.hp-signatures { display: flex; justify-content: space-between; margin-top: 60px; padding: 0 20px; page-break-inside: avoid; }
+.hp-sign-box { text-align: center; font-size: 15px; font-weight: 700; color: #000; border-top: 1px dashed #000; padding-top: 5px; width: 200px; }
+      }
     </style>
 </head>
 <body>
@@ -1052,14 +1051,13 @@ globalHallPlanHTML = '';
             let countAdmit = 0;
             let countSeat = 0;
 // ==========================================
-// HALL PLAN GENERATION LOGIC (PROFESSIONAL)
+// HALL PLAN GENERATION LOGIC (OFFICIAL B&W)
 // ==========================================
 const hallNo = document.getElementById('cfg-hall') ? document.getElementById('cfg-hall').value : '১';
 let hpGroups = {};
 let totalBoysAll = 0;
 let totalGirlsAll = 0;
 
-// ডাটা গ্রুপিং এবং ছেলে-মেয়ে গোনা
 parsedStudents.forEach(st => {
     const cls = st.classBn || 'অজানা';
     if(!hpGroups[cls]) hpGroups[cls] = { students: [], boys: 0, girls: 0 };
@@ -1076,13 +1074,12 @@ parsedStudents.forEach(st => {
     }
 });
 
-// হলের পেজ তৈরি শুরু
+// হলের পেজ তৈরি শুরু (বড় হল নং, কোনো মাদ্রাসার নাম নেই)
 globalHallPlanHTML = `
 <div class="hall-plan-page">
     <div class="hp-header">
-        <h1 class="hp-inst">আবদুর রাজ্জাক দাখিল মাদ্রাসা</h1>
+        <div class="hp-hall-no">হল নং - ${toBn(hallNo)}</div>
         <div class="hp-exam">${cfg.exam}</div>
-        <div class="hp-title-box">হল নং - ${toBn(hallNo)}</div>
     </div>
 `;
 
@@ -1097,7 +1094,6 @@ for (let cls in hpGroups) {
         <div class="hp-grid">
     `;
     
-    // ৩ কলামে নাম ও রোল বসানো
     grp.students.forEach(st => {
         globalHallPlanHTML += `
             <div class="hp-item">
@@ -1107,17 +1103,15 @@ for (let cls in hpGroups) {
         `;
     });
     
-    // নিচের বর্ডার ঠিক রাখতে খালি ডিভ দেওয়া (যাতে ৩ কলামের গ্রিড না ভাঙে)
     let remainder = grp.students.length % 3;
     if (remainder !== 0) {
         for(let i=0; i < (3 - remainder); i++) {
-            globalHallPlanHTML += `<div class="hp-item" style="border:none;"></div>`;
+            globalHallPlanHTML += `<div class="hp-item" style="border-bottom: 1px solid #000;"></div>`;
         }
     }
     globalHallPlanHTML += `</div></div>`;
 }
 
-// গ্র্যান্ড টোটাল ও স্বাক্ষর
 globalHallPlanHTML += `
     <div class="hp-footer-summary">
         <div class="hp-total-text">এই হলে মোট পরীক্ষার্থী: ${toBn(parsedStudents.length)} জন</div>
