@@ -262,54 +262,59 @@
             .sp-hl { flex: 1; display: flex; align-items: center; font-size: 12px; }
             .sp-hl .sp-lbl { width: 60px; }
             .sp-hl .sp-val { border: 1px solid var(--primary); background: rgba(0,90,52,0.05); padding: 2px 4px; border-radius: 3px; font-weight: 800; color: #111; line-height: 1; text-align: center; font-size: 14px;}
- /* --- 3. OFFICIAL B&W HALL PLAN PAGE CSS (COLUMN-FLOW) --- */
+ /* --- 3. OFFICIAL B&W HALL PLAN PAGE CSS (COMPACT & BOLD) --- */
 .hall-plan-page {
     width: 210mm; min-height: 296mm; padding: 15mm; box-sizing: border-box;
-    background: white; page-break-after: always; font-family: 'Anek Bangla', sans-serif;
+    background: white; page-break-after: always; 
+    font-family: 'Noto Serif Bengali', serif; /* একদম অফিশিয়াল ডকুমেন্টের ফন্ট */
     color: #000; position: relative;
 }
-.hp-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 25px; }
-.hp-hall-no { font-size: 38px; font-weight: 800; color: #000; margin: 0; line-height: 1; }
-.hp-exam { font-size: 18px; font-weight: 700; color: #333; margin-top: 8px; }
+.hp-header { text-align: center; border-bottom: 2.5px solid #000; padding-bottom: 15px; margin-bottom: 20px; }
+.hp-hall-no { 
+    font-size: 55px; /* আগের চেয়ে অনেক বড় করা হয়েছে */
+    font-family: 'Anek Bangla', sans-serif; /* নাম্বারটি দূর থেকে দেখার জন্য বোল্ড ফন্ট */
+    font-weight: 800; color: #000; margin: 0; line-height: 1; 
+}
+.hp-exam { font-size: 20px; font-weight: 700; color: #222; margin-top: 10px; font-family: 'Anek Bangla', sans-serif; }
 
-.hp-class-section { margin-bottom: 25px; }
+.hp-class-section { margin-bottom: 18px; }
 .hp-class-header { 
     display: flex; justify-content: space-between; align-items: baseline; 
-    border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 12px; 
+    border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px; 
 }
-.hp-class-name { font-size: 20px; font-weight: 800; color: #000; }
-.hp-class-stats { font-size: 15px; font-weight: 600; color: #444; }
+.hp-class-name { font-size: 22px; font-weight: 800; color: #000; font-family: 'Anek Bangla', sans-serif; }
+.hp-class-stats { font-size: 15px; font-weight: 600; color: #333; font-family: 'Anek Bangla', sans-serif; }
 
-/* ৩ কলামের লেআউট (উপর থেকে নিচে যাবে) */
+/* ৩ কলামের লেআউট */
 .hp-grid { 
     column-count: 3; 
-    column-gap: 20px; 
+    column-gap: 25px; 
 }
 .hp-item { 
-    display: flex; align-items: flex-start; gap: 6px; font-size: 16px; 
-    padding: 5px 0;
-    break-inside: avoid; /* কলাম ভাঙা রোধ করতে */
+    display: flex; align-items: flex-start; gap: 5px; 
+    font-size: 16px; 
+    padding: 2px 0; /* নামের উপরে ও নিচের অতিরিক্ত ফাঁকা একদম কমিয়ে দেওয়া হয়েছে */
+    line-height: 1.1; /* লাইন হাইট কমানো হয়েছে যাতে ঘিঞ্জি না হয়েও টাইট থাকে */
+    break-inside: avoid; 
     page-break-inside: avoid;
 }
 .hp-roll { 
-    font-weight: 800; font-family: monospace; font-size: 17px; color: #000; 
-    flex-shrink: 0; 
-    text-align: left; /* দূরে সরে থাকা ঠিক করা হয়েছে */
+    font-weight: 700; font-family: monospace; font-size: 16px; color: #000; 
+    flex-shrink: 0; text-align: left; 
 }
 .hp-name { 
-    font-weight: 600; color: #222; 
-    white-space: normal; /* বড় নাম হলে নিচে চলে যাবে, বাইরে যাবে না */
+    font-weight: 600; color: #111; 
+    white-space: normal; 
     word-wrap: break-word;
-    line-height: 1.3;
 }
 
 /* নিচের টোটাল সামারি */
 .hp-footer-summary { 
-    margin-top: 40px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; 
-    padding: 15px; text-align: center; page-break-inside: avoid; 
+    margin-top: 25px; border-top: 2px solid #000; border-bottom: 2px solid #000; 
+    padding: 10px; text-align: center; page-break-inside: avoid; 
 }
-.hp-total-text { font-size: 20px; font-weight: 800; color: #000; margin-bottom: 5px; }
-.hp-total-sub { font-size: 16px; font-weight: 600; color: #444; }
+.hp-total-text { font-size: 20px; font-weight: 800; color: #000; margin-bottom: 2px; font-family: 'Anek Bangla', sans-serif; }
+.hp-total-sub { font-size: 15px; font-weight: 600; color: #333; font-family: 'Anek Bangla', sans-serif; }
    }
     </style>
 </head>
