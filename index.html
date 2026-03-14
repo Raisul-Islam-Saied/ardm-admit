@@ -262,36 +262,55 @@
             .sp-hl { flex: 1; display: flex; align-items: center; font-size: 12px; }
             .sp-hl .sp-lbl { width: 60px; }
             .sp-hl .sp-val { border: 1px solid var(--primary); background: rgba(0,90,52,0.05); padding: 2px 4px; border-radius: 3px; font-weight: 800; color: #111; line-height: 1; text-align: center; font-size: 14px;}
-        
-        /* --- 3. OFFICIAL B&W HALL PLAN PAGE CSS --- */
+ /* --- 3. OFFICIAL B&W HALL PLAN PAGE CSS (COLUMN-FLOW) --- */
 .hall-plan-page {
     width: 210mm; min-height: 296mm; padding: 15mm; box-sizing: border-box;
     background: white; page-break-after: always; font-family: 'Anek Bangla', sans-serif;
     color: #000; position: relative;
 }
-.hp-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 20px; }
-.hp-hall-no { font-size: 36px; font-weight: 800; color: #000; margin: 0; border: 3px solid #000; display: inline-block; padding: 8px 40px; }
-.hp-exam { font-size: 18px; font-weight: 700; color: #000; margin-top: 15px; }
+.hp-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 25px; }
+.hp-hall-no { font-size: 38px; font-weight: 800; color: #000; margin: 0; line-height: 1; }
+.hp-exam { font-size: 18px; font-weight: 700; color: #333; margin-top: 8px; }
 
-.hp-class-section { margin-bottom: 20px; border: 1px solid #000; }
-.hp-class-header { border-bottom: 1px solid #000; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; }
-.hp-class-name { font-size: 18px; font-weight: 800; color: #000; }
-.hp-class-stats { font-size: 15px; font-weight: 700; color: #000; }
+.hp-class-section { margin-bottom: 25px; }
+.hp-class-header { 
+    display: flex; justify-content: space-between; align-items: baseline; 
+    border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 12px; 
+}
+.hp-class-name { font-size: 20px; font-weight: 800; color: #000; }
+.hp-class-stats { font-size: 15px; font-weight: 600; color: #444; }
 
-/* ৩ কলামের সাদা-কালো গ্রিড */
-.hp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
-.hp-item { padding: 8px 10px; border-bottom: 1px solid #000; border-right: 1px solid #000; display: flex; align-items: baseline; gap: 8px; font-size: 15px; }
-.hp-item:nth-child(3n) { border-right: none; }
-.hp-roll { font-weight: 800; font-family: monospace; font-size: 17px; color: #000; width: 40px; text-align: right; flex-shrink: 0;}
-.hp-name { font-weight: 600; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* ৩ কলামের লেআউট (উপর থেকে নিচে যাবে) */
+.hp-grid { 
+    column-count: 3; 
+    column-gap: 20px; 
+}
+.hp-item { 
+    display: flex; align-items: flex-start; gap: 6px; font-size: 16px; 
+    padding: 5px 0;
+    break-inside: avoid; /* কলাম ভাঙা রোধ করতে */
+    page-break-inside: avoid;
+}
+.hp-roll { 
+    font-weight: 800; font-family: monospace; font-size: 17px; color: #000; 
+    flex-shrink: 0; 
+    text-align: left; /* দূরে সরে থাকা ঠিক করা হয়েছে */
+}
+.hp-name { 
+    font-weight: 600; color: #222; 
+    white-space: normal; /* বড় নাম হলে নিচে চলে যাবে, বাইরে যাবে না */
+    word-wrap: break-word;
+    line-height: 1.3;
+}
 
-.hp-footer-summary { margin-top: 30px; border: 2px solid #000; padding: 15px; text-align: center; page-break-inside: avoid; }
+/* নিচের টোটাল সামারি */
+.hp-footer-summary { 
+    margin-top: 40px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; 
+    padding: 15px; text-align: center; page-break-inside: avoid; 
+}
 .hp-total-text { font-size: 20px; font-weight: 800; color: #000; margin-bottom: 5px; }
-.hp-total-sub { font-size: 16px; font-weight: 700; color: #000; }
-
-.hp-signatures { display: flex; justify-content: space-between; margin-top: 60px; padding: 0 20px; page-break-inside: avoid; }
-.hp-sign-box { text-align: center; font-size: 15px; font-weight: 700; color: #000; border-top: 1px dashed #000; padding-top: 5px; width: 200px; }
-      }
+.hp-total-sub { font-size: 16px; font-weight: 600; color: #444; }
+   }
     </style>
 </head>
 <body>
@@ -421,10 +440,7 @@
                             <label class="block text-xs font-bold text-gray-500 mb-1">ইস্যু তারিখ</label>
                             <input type="text" id="cfg-date" value="১০ মে, ২০২৬" class="input-field" style="font-family: sans-serif;">
                         </div>
-                        <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1">হল নং</label>
-                        <input type="text" id="cfg-hall" value="১" class="input-field" style="font-family: sans-serif;">
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -1051,13 +1067,14 @@ globalHallPlanHTML = '';
             let countAdmit = 0;
             let countSeat = 0;
 // ==========================================
-// HALL PLAN GENERATION LOGIC (OFFICIAL B&W)
 // ==========================================
-const hallNo = document.getElementById('cfg-hall') ? document.getElementById('cfg-hall').value : '১';
+// HALL PLAN GENERATION LOGIC (OFFICIAL B&W, NO BOXES)
+// ==========================================
 let hpGroups = {};
 let totalBoysAll = 0;
 let totalGirlsAll = 0;
 
+// ডাটা গ্রুপিং এবং ছেলে-মেয়ে গোনা
 parsedStudents.forEach(st => {
     const cls = st.classBn || 'অজানা';
     if(!hpGroups[cls]) hpGroups[cls] = { students: [], boys: 0, girls: 0 };
@@ -1074,11 +1091,11 @@ parsedStudents.forEach(st => {
     }
 });
 
-// হলের পেজ তৈরি শুরু (বড় হল নং, কোনো মাদ্রাসার নাম নেই)
+// হলের পেজ তৈরি শুরু (__HALL_NO__ প্লেসহোল্ডার দিয়ে)
 globalHallPlanHTML = `
 <div class="hall-plan-page">
     <div class="hp-header">
-        <div class="hp-hall-no">হল নং - ${toBn(hallNo)}</div>
+        <div class="hp-hall-no">হল নং - __HALL_NO__</div>
         <div class="hp-exam">${cfg.exam}</div>
     </div>
 `;
@@ -1094,36 +1111,28 @@ for (let cls in hpGroups) {
         <div class="hp-grid">
     `;
     
+    // নাম ও রোল লুপ (ডায়নামিক কলামের জন্য, কোনো বক্স ছাড়া)
     grp.students.forEach(st => {
         globalHallPlanHTML += `
             <div class="hp-item">
-                <span class="hp-roll">${toBn(st.roll)}</span>
-                <span class="hp-name">- ${st.nameBn}</span>
+                <span class="hp-roll">${toBn(st.roll)} -</span>
+                <span class="hp-name">${st.nameBn}</span>
             </div>
         `;
     });
     
-    let remainder = grp.students.length % 3;
-    if (remainder !== 0) {
-        for(let i=0; i < (3 - remainder); i++) {
-            globalHallPlanHTML += `<div class="hp-item" style="border-bottom: 1px solid #000;"></div>`;
-        }
-    }
     globalHallPlanHTML += `</div></div>`;
 }
 
+// একদম শেষে গ্র্যান্ড টোটাল (স্বাক্ষর ছাড়া)
 globalHallPlanHTML += `
     <div class="hp-footer-summary">
         <div class="hp-total-text">এই হলে মোট পরীক্ষার্থী: ${toBn(parsedStudents.length)} জন</div>
         <div class="hp-total-sub">মোট ছাত্র: ${toBn(totalBoysAll)} জন | মোট ছাত্রী: ${toBn(totalGirlsAll)} জন</div>
     </div>
-    
-    <div class="hp-signatures">
-        <div class="hp-sign-box">কক্ষ পরিদর্শকের স্বাক্ষর</div>
-        <div class="hp-sign-box">কেন্দ্র সচিবের স্বাক্ষর</div>
-    </div>
 </div>
 `;
+
 
             parsedStudents.forEach((student, index) => {
                 const photoSrc = student.img.startsWith('http') ? student.img : ASSETS.DUMMY_AVATAR;
@@ -1265,11 +1274,18 @@ globalHallPlanHTML += `
             document.getElementById('print-engine').innerHTML = globalSeatPlansHTML;
             window.print();
         }
-        
-        function printHallPlan() {
-        document.getElementById('print-engine').innerHTML = globalHallPlanHTML;
+// --- নতুন প্রম্পট সহ হল প্লান প্রিন্ট ফাংশন ---
+function printHallPlan() {
+    let hallNoInput = prompt("অনুগ্রহ করে হল নম্বর লিখুন (যেমন: ১, ২, ৩):", "১");
+    
+    if (hallNoInput !== null && hallNoInput.trim() !== "") {
+        let finalHTML = globalHallPlanHTML.replace(/__HALL_NO__/g, toBn(hallNoInput.trim()));
+        document.getElementById('print-engine').innerHTML = finalHTML;
         window.print();
-        }
+    } else {
+        showToast("হল নম্বর না দেওয়ায় প্রিন্ট বাতিল করা হয়েছে!");
+    }
+}
 
     </script>
 </body>
