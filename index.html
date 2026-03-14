@@ -277,18 +277,18 @@
 }
 .hp-exam { font-size: 22px; font-weight: 700; color: #222; margin-top: 10px; font-family:'Noto Serif Bengali', 'Anek Bangla', sans-serif; }
 
-.hp-class-section { margin-bottom: 18px; }
+.hp-class-section { margin-bottom: 20px; }
 .hp-class-header { 
     display: flex; justify-content: space-between; align-items: baseline; 
     border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px; 
 }
 .hp-class-name { font-size: 22px; font-weight: 800; color: #000; font-family:'Noto Serif Bengali', 'Anek Bangla', sans-serif; }
-.hp-class-stats { font-size: 16px; font-weight: 600; color: #333; font-family:'Noto Serif Bengali', 'Anek Bangla', sans-serif; }
+.hp-class-stats { font-size: 18px; font-weight: 600; color: #333; font-family:'Noto Serif Bengali', 'Anek Bangla', sans-serif; }
 
 /* ৩ কলামের লেআউট */
 .hp-grid { 
     column-count: 3; 
-    column-gap: 25px; 
+    column-gap: 20px; 
 }
 .hp-item { 
     display: flex; align-items: flex-start; gap: 5px; 
@@ -313,7 +313,7 @@
     padding: 10px; text-align: center; page-break-inside: avoid; 
 }
 .hp-total-text { font-size: 22px; font-weight: 800; color: #000; margin-bottom: 2px; font-family: 'Noto Serif Bengali','Anek Bangla', sans-serif; }
-.hp-total-sub { font-size: 17px; font-weight: 600; color: #333; font-family:'Noto Serif Bengali', 'Anek Bangla', sans-serif; }
+.hp-total-sub { font-size: 18px; font-weight: 600; color: #333; font-family:'Noto Serif Bengali', 'Anek Bangla', sans-serif; }
    }
     </style>
 </head>
@@ -1110,7 +1110,7 @@ for (let cls in hpGroups) {
     <div class="hp-class-section">
         <div class="hp-class-header">
             <div class="hp-class-name">${cls} শ্রেণি - ${toBn(grp.students.length)} জন</div>
-            <div class="hp-class-stats">(ছেলে: ${toBn(grp.boys)} | মেয়ে: ${toBn(grp.girls)})</div>
+            <div class="hp-class-stats">(ছাত্র: ${toBn(grp.boys)} জন | ছাত্রী : ${toBn(grp.girls)} জন)</div>
         </div>
         <div class="hp-grid">
     `;
