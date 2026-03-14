@@ -1254,6 +1254,17 @@ globalHallPlanHTML += `
                 }
 
             });
+            // 👇👇 এখান থেকে নতুন কোডটুকু শুরু (লোকাল স্টোরেজে কার্ড সেভ করার জন্য) 👇👇
+            try {
+                localStorage.setItem('savedAdmitCards', globalAdmitCardsHTML);
+                localStorage.setItem('savedSeatPlans', globalSeatPlansHTML);
+                localStorage.setItem('savedHallPlan', globalHallPlanHTML);
+                localStorage.setItem('savedCardCount', parsedStudents.length);
+                localStorage.setItem('hasSavedCards', 'true');
+            } catch (error) {
+                console.warn("স্টোরেজ লিমিট পার হওয়ায় কার্ড সেভ করা যায়নি।");
+            }
+            // 👆👆 নতুন কোডটুকু শেষ 👆👆
 
             document.getElementById('loader').style.display = 'none';
             document.getElementById('success-count').innerText = parsedStudents.length;
@@ -1290,11 +1301,48 @@ function printHallPlan() {
         showToast("হল নম্বর না দেওয়ায় প্রিন্ট বাতিল করা হয়েছে!");
     }
 }
-        // ==========================================
-        // AUTO LOAD DATA ON PAGE START
-        // ==========================================
+        
+        
+        function initStorage() {
+            // ১. বক্সের সেভ করা ডাটা ফিরিয়ে আনা
+            const savedExam = localStorage.getItem('admit_exam_name');
+            const savedSession = localStorage.getItem('admit_session');
+            const savedDate = localStorage.getItem('admit_issue_date');
+
+            if (savedExam) document.getElementById('cfg-exam').value = savedExam;
+            if (savedSession) document.getElementById('cfg-session').value = savedSession;
+            if (savedDate) document.getElementById('cfg-date').value = savedDate;
+
+            // ২. বক্সে কিছু টাইপ করলেই যেন সাথে সাথে সেভ হয় তার ব্যবস্থা
+            const saveSettings = () => {
+                localStorage.setItem('admit_exam_name', document.getElementById('cfg-exam').value);
+                localStorage.setItem('admit_session', document.getElementById('cfg-session').value);
+                localStorage.setItem('admit_issue_date', document.getElementById('cfg-date').value);
+            };
+            document.getElementById('cfg-exam').addEventListener('input', saveSettings);
+            document.getElementById('cfg-session').addEventListener('input', saveSettings);
+            document.getElementById('cfg-date').addEventListener('input', saveSettings);
+
+            // ৩. রিলোড দেওয়ার আগে বানানো কার্ডগুলো ফিরিয়ে আনা
+            if (localStorage.getItem('hasSavedCards') === 'true') {
+                globalAdmitCardsHTML = localStorage.getItem('savedAdmitCards') || '';
+                globalSeatPlansHTML = localStorage.getItem('savedSeatPlans') || '';
+                globalHallPlanHTML = localStorage.getItem('savedHallPlan') || '';
+                
+                const savedCount = localStorage.getItem('savedCardCount') || '0';
+                document.getElementById('success-count').innerText = savedCount;
+                
+                // প্রিন্ট বাটনটি চালু করে দেওয়া, যাতে রিলোডের পরও প্রিন্ট করা যায়
+                const printTab = document.getElementById('tab-print');
+                printTab.style.pointerEvents = 'auto';
+                printTab.style.opacity = '1';
+            }
+        }
+
+        // পেজ ওপেন হওয়ার সাথে সাথেই উপরের কাজগুলো এবং স্টুডেন্ট লোড করা
         window.addEventListener('DOMContentLoaded', () => {
-            fetchOnlineStudents();
+            initStorage();           // আগের ডাটা ও কার্ড লোড করবে
+            fetchOnlineStudents();   // ব্যাকগ্রাউন্ডে API থেকে সব স্টুডেন্ট লোড করবে
         });
 
     </script>
