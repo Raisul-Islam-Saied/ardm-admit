@@ -1288,7 +1288,11 @@ globalHallPlanHTML += `
 
         function printSeatPlans() {
             document.getElementById('print-engine').innerHTML = globalSeatPlansHTML;
-            window.print();
+              setTimeout(() => {
+          window.print();
+                  
+        }, 2000);
+          
         }
 // --- নতুন প্রম্পট সহ হল প্লান প্রিন্ট ফাংশন ---
 function printHallPlan() {
