@@ -180,92 +180,90 @@
             .ac-date { position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #6b7280; font-family: sans-serif; font-weight: 600;}
 
             /* --- 2. SEAT PLAN PAGE CSS (8 per page) --- */
-            /* --- 2. SEAT PLAN PAGE CSS (10 per page) --- */
-.seat-plan-page {
-    width: 210mm;
-    height: 296mm;
-    page-break-after: always;
-    page-break-inside: avoid;
-    padding: 0; /* পেজের নিজস্ব প্যাডিং ০, কারণ আমরা কার্ডের চারপাশে প্যাডিং দেব */
-    box-sizing: border-box;
-    background: white;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(5, 1fr); /* এক পেজে ১০টি কার্ড (৫ সারি) */
-    gap: 0;
-}
+       /* --- 2. SEAT PLAN PAGE CSS (Updated & Fixed) --- */
+    .seat-plan-page {
+        width: 210mm;
+        height: 296mm;
+        page-break-after: always;
+        page-break-inside: avoid;
+        padding: 0;
+        box-sizing: border-box;
+        background: white;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(5, 1fr);
+        gap: 0;
+    }
 
-.seat-plan-page:last-child {
-    page-break-after: auto;
-}
+    .seat-plan-page:last-child {
+        page-break-after: auto;
+    }
 
-/* কাটার দাগ এবং ৫ মি.মি. গ্যাপের জন্য Wrapper */
-.sp-cut-wrapper {
-    padding: 5mm; /* প্রতিটি কার্ড সবদিকে ঠিক ৫ মি.মি. জায়গা পাবে */
-    box-sizing: border-box;
-    border-right: 1.5px dashed #888; /* ডানে কাটার দাগ */
-    border-bottom: 1.5px dashed #888; /* নিচে কাটার দাগ */
-    display: flex;
-    flex-direction: column;
-}
+    .sp-cut-wrapper {
+        padding: 5mm;
+        box-sizing: border-box;
+        border-right: 1.5px dashed #888;
+        border-bottom: 1.5px dashed #888;
+        display: flex;
+        flex-direction: column;
+    }
 
-/* ডান দিকের কার্ডগুলোর ডানে এবং একেবারে নিচের কার্ডগুলোর নিচে অতিরিক্ত দাগ সরাতে */
-.sp-cut-wrapper:nth-child(even) {
-    border-right: none; 
-}
-.sp-cut-wrapper:nth-last-child(1),
-.sp-cut-wrapper:nth-last-child(2) {
-    border-bottom: none; 
-}
+    .sp-cut-wrapper:nth-child(even) {
+        border-right: none; 
+    }
+    .sp-cut-wrapper:nth-last-child(1),
+    .sp-cut-wrapper:nth-last-child(2) {
+        border-bottom: none; 
+    }
 
-/* কার্ডের ভেতরের ডিজাইন (আগের মতোই) */
-.seat-plan-card {
-    border: 2px solid var(--gold);
-    outline: 3px solid var(--primary);
-    outline-offset: -4px;
-    padding: 3px;
-    box-sizing: border-box;
-    background: white;
-    color: #111;
-    font-family: 'Noto Serif Bengali', serif;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* কার্ডটি যেন পুরো ৫ মি.মি. বাদে বাকি জায়গা নিয়ে থাকে */
-            }
-            .sp-inner {
-                width: 100%; height: 100%; border: 1.5px dashed var(--primary);
-                padding: 6px 8px; box-sizing: border-box; display: flex; flex-direction: column; position: relative; z-index: 1;
-            }
-            .sp-inner::before {
-                content: ""; position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; transform: translate(-50%, -50%); z-index: -1;
-                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%23005A34' stroke-width='2' opacity='0.08'/%3E%3Cpath d='M30 65 Q50 30 70 65' fill='none' stroke='%23C29B0C' stroke-width='4' opacity='0.08'/%3E%3Ctext x='50' y='60' font-family='sans-serif' font-size='14' font-weight='bold' text-anchor='middle' fill='%23005A34' opacity='0.08'%3EARDM%3C/text%3E%3C/svg%3E");
-                background-size: contain; background-repeat: no-repeat; pointer-events: none;
-            }
-            .sp-header { display: flex; align-items: center; justify-content: center; border-bottom: 1.5px solid var(--primary); padding-bottom: 4px; margin-bottom: 6px; gap: 8px;}
-            .sp-logo { width: 32px; height: 32px; flex-shrink: 0;}
-            .sp-logo img { width: 100%; height: 100%; object-fit: contain;}
-            .sp-title-area { text-align: center; }
-            .sp-inst { font-family: 'Anek Bangla', sans-serif; font-size: 16px; font-weight: 800; color: var(--primary); margin: 0; line-height: 1.1; }
-            .sp-exam { font-family: 'Anek Bangla', sans-serif; background: var(--primary); color: white; padding: 1px 12px; border-radius: 10px; font-size: 11px; font-weight: bold; border: 1px solid var(--gold); display: inline-block; margin-top: 2px;}
+    .seat-plan-card {
+        border: 2px solid var(--gold);
+        outline: 3px solid var(--primary);
+        outline-offset: -4px;
+        padding: 3px;
+        box-sizing: border-box;
+        background: white;
+        color: #111;
+        font-family: 'Noto Serif Bengali', serif;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
 
-            .sp-body { display: flex; gap: 10px; flex-grow: 1; align-items: center;}
-            .sp-photo { width: 45px; height: 55px; border: 1.5px solid var(--primary); padding: 2px; background: white; border-radius: 2px; flex-shrink: 0; ;}
-            .sp-photo img { width: 100%; height: 100%; object-fit: cover; }
-            
-            .sp-data { flex-grow: 1; display: flex; flex-direction: column; gap: 4px; }
-            .sp-row { display: flex; align-items: baseline; font-size: 14px; }
-            .sp-lbl { width: 60px; font-weight: 700; color: #1f2937; position: relative;}
-            .sp-lbl::after { content: ":"; position: absolute; right: 5px; top: 0; }
-            .sp-val { flex-grow: 1; border-bottom: 1px dotted #888; font-weight: 700; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 4px;}
-            
-            .sp-hl-box { display: flex; gap: 10px; margin-top: 2px; }
-            .sp-hl { flex: 1; display: flex; align-items: center; font-size: 12px; }
-            .sp-hl .sp-lbl { width: 60px; }
-            .sp-hl .sp-val { border: 1px solid var(--primary); background: rgba(0,90,52,0.05); padding: 2px 4px; border-radius: 3px; font-weight: 800; color: #111; line-height: 1; text-align: center; font-size: 14px;}
- /* --- 3. OFFICIAL B&W HALL PLAN PAGE CSS (COMPACT & BOLD) --- */
-.hall-plan-page {
-   padding: 15mm; box-sizing: border-box;
+    .sp-inner {
+        width: 100%; height: 100%; border: 1.5px dashed var(--primary);
+        padding: 6px 8px; box-sizing: border-box; display: flex; flex-direction: column; position: relative; z-index: 1;
+    }
+
+    .sp-inner::before {
+        content: ""; position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; transform: translate(-50%, -50%); z-index: -1;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%23005A34' stroke-width='2' opacity='0.08'/%3E%3Cpath d='M30 65 Q50 30 70 65' fill='none' stroke='%23C29B0C' stroke-width='4' opacity='0.08'/%3E%3Ctext x='50' y='60' font-family='sans-serif' font-size='14' font-weight='bold' text-anchor='middle' fill='%23005A34' opacity='0.08'%3EARDM%3C/text%3E%3C/svg%3E");
+        background-size: contain; background-repeat: no-repeat; pointer-events: none;
+    }
+
+    .sp-header { display: flex; align-items: center; justify-content: center; border-bottom: 1.5px solid var(--primary); padding-bottom: 4px; margin-bottom: 6px; gap: 8px;}
+    .sp-logo { width: 32px; height: 32px; flex-shrink: 0;}
+    .sp-logo img { width: 100%; height: 100%; object-fit: contain;}
+    .sp-title-area { text-align: center; }
+    .sp-inst { font-family: 'Anek Bangla', sans-serif; font-size: 16px; font-weight: 800; color: var(--primary); margin: 0; line-height: 1.1; }
+    .sp-exam { font-family: 'Anek Bangla', sans-serif; background: var(--primary); color: white; padding: 1px 12px; border-radius: 10px; font-size: 11px; font-weight: bold; border: 1px solid var(--gold); display: inline-block; margin-top: 2px;}
+
+    .sp-body { display: flex; gap: 10px; flex-grow: 1; align-items: center;}
+    .sp-data { flex-grow: 1; display: flex; flex-direction: column; gap: 4px; }
+    
+    .sp-row { display: flex; align-items: baseline; font-size: 14px; font-family: 'Noto Serif Bengali', serif; }
+    .sp-lbl { width: 45px; font-weight: 700; color: #1f2937; flex-shrink: 0; }
+    .sp-lbl::after { content: " :"; } /* কোলন ফিক্স করা হলো */
+    
+    .sp-val { flex-grow: 1; border-bottom: 1px dotted #888; font-weight: 700; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 4px; font-size: 14px; }
+    
+    /* রোল এবং শ্রেণির বক্সের ডিজাইন ফিক্স */
+    .sp-hl-box { display: flex; gap: 8px; margin-top: 2px; }
+    .sp-hl { flex: 1; display: flex; align-items: center; font-size: 13px; font-family: 'Noto Serif Bengali', serif; }
+    .sp-hl .sp-lbl { width: 35px; font-weight: 700; }
+    .sp-hl .sp-lbl::after { content: " :"; }
+    .sp-hl .sp-val { border: 1px solid var(--primary); background: rgba(0,90,52,0.05); padding: 2px 4px; border-radius: 3px; font-weight: 800; color: #111; line-height: 1.2; text-align: center; font-size: 15px; font-family: 'Anek Bangla', monospace; }
     background: white; page-break-after: always; 
     font-family: 'Noto Serif Bengali', serif !important; /* একদম অফিশিয়াল ডকুমেন্টের ফন্ট */
     color: #000; position: relative;
@@ -1215,8 +1213,8 @@ globalHallPlanHTML += `
                     countAdmit = 0; 
                 }
 
-                // ==========================================
-                // 2. BUILD SEAT PLAN HTML (8 PER PAGE)
+              // ==========================================
+                // 2. BUILD SEAT PLAN HTML (10 PER PAGE)
                 // ==========================================
                 if (countSeat === 0) {
                     globalSeatPlansHTML += `<div class="seat-plan-page">`;
@@ -1235,12 +1233,12 @@ globalHallPlanHTML += `
                     </div>
                     <div class="sp-body">
                         <div class="sp-data">
-                            <div class="sp-row"><div class="sp-lbl">নাম</div><div class="sp-val" style="font-size: 14px;">${student.nameBn}</div></div>
-                            <div class="sp-row"><div class="sp-lbl">Name</div><div class="sp-val" style="font-size: 14px;">${student.nameEn}</div></div>
+                            <div class="sp-row"><div class="sp-lbl">নাম</div><div class="sp-val">${student.nameBn}</div></div>
+                            <div class="sp-row"><div class="sp-lbl">Name</div><div class="sp-val" style="font-family: 'Playfair Display', serif; font-size: 12px; text-transform: uppercase;">${student.nameEn}</div></div>
                             <div class="sp-row"><div class="sp-lbl">আইডি</div><div class="sp-val" style="font-family: monospace;">${student.id}</div></div>
                             <div class="sp-hl-box">
-                                <div class="sp-hl"><div class="sp-lbl">রোল</div><div class="sp-val" style="font-family: monospace; color: #005A34;">${toBn(student.roll)}</div></div>
-                                <div class="sp-hl"><div class="sp-lbl" style="width: 30px;">শ্রেণি</div><div class="sp-val">${student.classBn}</div></div>
+                                <div class="sp-hl"><div class="sp-lbl">রোল</div><div class="sp-val" style="color: #005A34;">${toBn(student.roll)}</div></div>
+                                <div class="sp-hl"><div class="sp-lbl">শ্রেণি</div><div class="sp-val">${student.classBn}</div></div>
                             </div>
                         </div>
                     </div>
